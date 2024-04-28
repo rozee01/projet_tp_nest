@@ -6,6 +6,7 @@ import { PostsModule } from './posts/posts.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Post } from './posts/entities/post.entity';
 import { Files } from './posts/entities/file.entity';
+import { FilesModule } from './files/files.module';
 
 @Module({
   imports: [CommonModule, PostsModule,
@@ -19,6 +20,7 @@ import { Files } from './posts/entities/file.entity';
       entities: [Post,Files],
       synchronize: true,
     }),
+    FilesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
