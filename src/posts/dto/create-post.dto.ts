@@ -1,5 +1,5 @@
 
-import {  IsNotEmpty, IsOptional, IsString, maxLength } from 'class-validator';
+import { IsNotEmpty, IsString } from 'class-validator';
 
 export class CreatePostDto {
     @IsNotEmpty()

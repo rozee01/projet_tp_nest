@@ -4,6 +4,7 @@ import { PostsModule } from './posts/posts.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Post } from './posts/entities/post.entity';
 import { Files } from './posts/entities/file.entity';
+import { FilesModule } from './files/files.module';
 import { AnnouncementModule } from './announcement/announcement.module';
 import { Announcement } from './announcement/entities/announcement.entity';
 
@@ -19,6 +20,7 @@ import { Announcement } from './announcement/entities/announcement.entity';
       entities: [Post,Files,Announcement],
       synchronize: true,
     }),
+    FilesModule,
     AnnouncementModule,
   ],
 })
