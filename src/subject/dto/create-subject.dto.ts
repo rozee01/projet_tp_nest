@@ -1,5 +1,4 @@
 import { IsNotEmpty, IsString} from 'class-validator';
-import { Teacher } from '../../teacher/entities/teacher.entity';
 export class CreateSubjectDto {
     @IsNotEmpty()
     @IsString()
@@ -12,7 +11,5 @@ export class CreateSubjectDto {
     @IsNotEmpty()
     isActive : boolean
 
-    @IsNotEmpty()
-    teacher : Teacher
 }
 

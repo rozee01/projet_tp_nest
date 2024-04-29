@@ -8,9 +8,7 @@ import { FilesModule } from './files/files.module';
 import { AnnouncementModule } from './announcement/announcement.module';
 import { Announcement } from './announcement/entities/announcement.entity';
 import { SubjectModule } from './subject/subject.module';
-import { TeacherModule } from './teacher/teacher.module';
 import { Subject } from './subject/entities/subject.entity';
-import { Teacher } from './teacher/entities/teacher.entity';
 
 @Module({
   imports: [CommonModule, PostsModule,
@@ -21,13 +19,12 @@ import { Teacher } from './teacher/entities/teacher.entity';
       username: 'postgres',
       password: '285',
       database: 'ClassroomDb',
-      entities: [Post,File,Announcement,Subject, Teacher],
+      entities: [Post,File,Announcement,Subject],
       synchronize: true,
     }),
     FilesModule,
     AnnouncementModule,
     SubjectModule,
-    TeacherModule,
   ],
 })
 export class AppModule {}
