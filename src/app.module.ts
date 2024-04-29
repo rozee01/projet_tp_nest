@@ -9,6 +9,10 @@ import { AnnouncementModule } from './announcement/announcement.module';
 import { Announcement } from './announcement/entities/announcement.entity';
 import { ClassModule } from './class/class.module';
 import { Class } from './class/entities/class.entity';
+import { UserModule } from './user/user.module';
+import { User } from './user/entities/user.entity';
+import { StudentClassModule } from './student-class/student-class.module';
+import { StudentClass } from './student-class/entities/studentclass.entity';
 
 @Module({
   imports: [
@@ -22,12 +26,14 @@ import { Class } from './class/entities/class.entity';
       username: 'postgres',
       password: '0000',
       database: 'ClassroomDb', 
-      entities: [Post, File, Announcement, Class],
+      entities: [Post, File, Announcement, Class, User, StudentClass],
       synchronize: true,
     }),
     FilesModule,
     AnnouncementModule,
     ClassModule,
+    UserModule,
+    StudentClassModule,
   ],
 })
 export class AppModule {}

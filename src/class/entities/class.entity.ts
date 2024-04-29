@@ -1,6 +1,8 @@
 /* eslint-disable prettier/prettier */
+import { User } from "src/user/entities/user.entity";
 import { Timestamp } from "../../common/database/timestamp.entity";
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, OneToMany } from 'typeorm';
+import { StudentClass } from "src/student-class/entities/studentclass.entity";
 
 @Entity()
 export class Class extends Timestamp {
@@ -9,7 +11,11 @@ export class Class extends Timestamp {
 
   @Column({nullable : false })
   class_name: string;
+  
+  @ManyToOne(() => User, user => user.classesTaught)
+    @JoinColumn({ name: 'teacher_id' })
+    teacher: User;
 
-  //@Column({nullable: false })
-  //teacher_id: number;
+  @OneToMany(() => StudentClass, studentClass => studentClass.class)
+   studentClasses: StudentClass[];
 }
