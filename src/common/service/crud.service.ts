@@ -1,4 +1,4 @@
- import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { DeepPartial, Repository, UpdateResult } from 'typeorm';
 import { HasId } from '../interfaces/hasId.interface';
 
@@ -21,7 +21,6 @@ export class CrudService<Entity extends HasId> {
     return this.repository.save(entity);
   }
 
-
   async remove(id: string): Promise<UpdateResult> {
     const result = await this.repository.softDelete(id);
     if (!result.affected) {
@@ -29,7 +28,6 @@ export class CrudService<Entity extends HasId> {
     }
     return result;
   }
-
 
   async restore(id: string): Promise<UpdateResult> {
     const result = await this.repository.restore(id);
@@ -39,7 +37,6 @@ export class CrudService<Entity extends HasId> {
     return result;
   }
 
-  
   findAll(): Promise<Entity[]> {
     return this.repository.find();
   }

@@ -8,7 +8,9 @@ import { AnnouncementModule } from './announcement/announcement.module';
 import { Announcement } from './announcement/entities/announcement.entity';
 
 @Module({
-  imports: [CommonModule, PostsModule,
+  imports: [
+    CommonModule,
+    PostsModule,
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: 'localhost',
@@ -16,7 +18,7 @@ import { Announcement } from './announcement/entities/announcement.entity';
       username: 'postgres',
       password: '0000',
       database: 'ClassroomDb',
-      entities: [Post,Files,Announcement],
+      entities: [Post, Files, Announcement],
       synchronize: true,
     }),
     AnnouncementModule,

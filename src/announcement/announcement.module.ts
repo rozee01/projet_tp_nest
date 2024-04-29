@@ -7,6 +7,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 @Module({
   controllers: [AnnouncementController],
   providers: [AnnouncementService],
-  imports:[TypeOrmModule.forFeature([Announcement])]
+  imports: [TypeOrmModule.forFeature([Announcement])],
 })
 export class AnnouncementModule {}

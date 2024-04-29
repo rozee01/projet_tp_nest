@@ -3,8 +3,7 @@ import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 't
 //import { Class } from './Class.entity'; // Assuming you have a Class entity defined
 
 @Entity()
-export class Announcement extends Timestamp{
-
+export class Announcement extends Timestamp {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -21,4 +20,3 @@ export class Announcement extends Timestamp{
   @JoinColumn({ name: 'class_id' })
   class: Class;*/
 }
-

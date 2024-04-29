@@ -5,12 +5,11 @@ import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
-export class AnnouncementService extends CrudService<Announcement>{
+export class AnnouncementService extends CrudService<Announcement> {
   constructor(
     @InjectRepository(Announcement)
-    private announcementRepository:Repository<Announcement>,
-  )
-  {
+    private announcementRepository: Repository<Announcement>,
+  ) {
     super(announcementRepository);
   }
   /*create(createAnnouncementDto: CreateAnnouncementDto) {
