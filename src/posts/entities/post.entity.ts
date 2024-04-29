@@ -1,6 +1,6 @@
 import { Timestamp } from "src/common/database/timestamp.entity";
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
-import { Files } from "./file.entity";
+import { File } from "../../files/entities/file.entity";
 @Entity()
 export class Post extends Timestamp{
 
@@ -11,11 +11,11 @@ export class Post extends Timestamp{
     @Column()
     content: string;
     @OneToMany(
-        type=>Files,
+        ()=>File,
         (files)=>files.post,
         {cascade:true}
     )
-    files: Files[];
+    files: File[];
 
 
    /* @Column()
