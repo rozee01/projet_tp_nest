@@ -3,10 +3,12 @@ import { CommonModule } from './common/common.module';
 import { PostsModule } from './posts/posts.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Post } from './posts/entities/post.entity';
-import { Files } from './posts/entities/file.entity';
+import { File } from './files/entities/file.entity';
 import { FilesModule } from './files/files.module';
 import { AnnouncementModule } from './announcement/announcement.module';
 import { Announcement } from './announcement/entities/announcement.entity';
+import { SubjectModule } from './subject/subject.module';
+import { Subject } from './subject/entities/subject.entity';
 
 @Module({
   imports: [CommonModule, PostsModule,
@@ -15,13 +17,14 @@ import { Announcement } from './announcement/entities/announcement.entity';
       host: 'localhost',
       port: 5432,
       username: 'postgres',
-      password: '0000',
+      password: '285',
       database: 'ClassroomDb',
-      entities: [Post,Files,Announcement],
+      entities: [Post,File,Announcement,Subject],
       synchronize: true,
     }),
     FilesModule,
     AnnouncementModule,
+    SubjectModule,
   ],
 })
 export class AppModule {}
