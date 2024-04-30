@@ -41,21 +41,21 @@ services:
       retries: 5
       start_period: 10s
 
-  backend:
-    build: .
-    ports:
-      - "3000:3000"
+  # backend:
+  #   build: .
+  #   ports:
+  #     - "3000:3000"
     
-    # db must be running and healthy before starting the backend service
-    depends_on:
-      - db
-    restart: on-failure
-    healthcheck:
-      test: ["CMD-SHELL", "curl -f http://localhost:3000/health || exit 1"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-      start_period: 10s
+  #   # db must be running and healthy before starting the backend service
+  #   depends_on:
+  #     - db
+  #   restart: on-failure
+  #   healthcheck:
+  #     test: ["CMD-SHELL", "curl -f http://localhost:3000/health || exit 1"]
+  #     interval: 10s
+  #     timeout: 5s
+  #     retries: 5
+  #     start_period: 10s
 
 volumes:
   db-data:

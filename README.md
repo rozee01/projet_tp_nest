@@ -40,8 +40,13 @@ Make sure you have Docker and Node.js installed.
 3. Run `npm install` to install dependencies.
 4. Create the `.env` file and fill the variables:
 
-    - follow the structure found in the `.env.example`.
+    - follow the structure found in the `.env.example` depending on whether you are using it for dev or prod.
     - fill in the hostname, password and credentials from the dockerfile
+    - run this command to get a secret key
+
+    ```bash
+    node -p "require('crypto').randomBytes(64).toString('hex');"
+    ```
 
 5. Run `docker-compose up` to start the Docker containers.
 
