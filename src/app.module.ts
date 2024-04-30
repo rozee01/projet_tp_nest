@@ -12,31 +12,31 @@ import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 
 @Module({
-  imports: [
-    ConfigModule.forRoot({
-      envFilePath: '.env',
-      isGlobal: true,
-    }),
-    CommonModule,
-    PostsModule,
-    TypeOrmModule.forRootAsync({
-      inject: [ConfigService],
-      useFactory: async (config: ConfigService): Promise<TypeOrmModuleOptions> => {
-        return {
-          type: 'postgres',
-          host: config.get<string>('DB_HOST'),
-          port: config.get<number>('DB_PORT'),
-          username: config.get<string>('DB_USERNAME'),
-          password: config.get<string>('DB_PASSWORD'),
-          database: config.get<string>('DB_NAME'),
-          entities: [Post, Files, Announcement],
-          synchronize: true, // never use True in production
-        };
-      },
-    }),
-    AnnouncementModule,
-    AuthModule,
-    UsersModule,
-  ],
+    imports: [
+        ConfigModule.forRoot({
+            envFilePath: '.env',
+            isGlobal: true,
+        }),
+        CommonModule,
+        PostsModule,
+        TypeOrmModule.forRootAsync({
+            inject: [ConfigService],
+            useFactory: async (config: ConfigService): Promise<TypeOrmModuleOptions> => {
+                return {
+                    type: 'postgres',
+                    host: config.get<string>('DB_HOST'),
+                    port: config.get<number>('DB_PORT'),
+                    username: config.get<string>('DB_USERNAME'),
+                    password: config.get<string>('DB_PASSWORD'),
+                    database: config.get<string>('DB_NAME'),
+                    entities: [Post, Files, Announcement],
+                    synchronize: true, // never use True in production
+                };
+            },
+        }),
+        AnnouncementModule,
+        AuthModule,
+        UsersModule,
+    ],
 })
 export class AppModule {}

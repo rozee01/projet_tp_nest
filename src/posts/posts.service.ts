@@ -6,10 +6,10 @@ import { Repository } from 'typeorm';
 
 @Injectable()
 export class PostsService extends CrudService<Post> {
-  constructor(
-    @InjectRepository(Post)
-    private readonly postRepository: Repository<Post>,
-  ) {
-    super(postRepository);
-  }
+    constructor(
+        @InjectRepository(Post)
+        private readonly postRepository: Repository<Post>,
+    ) {
+        super(postRepository);
+    }
 }

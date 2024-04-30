@@ -4,19 +4,19 @@ import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 't
 
 @Entity()
 export class Announcement extends Timestamp {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
+    @PrimaryGeneratedColumn('uuid')
+    id: string;
 
-  /*@Column()
+    /*@Column()
   class_id: string;*/
 
-  @Column({ length: 255 })
-  title: string;
+    @Column({ length: 255 })
+    title: string;
 
-  @Column('text')
-  content: string;
+    @Column('text')
+    content: string;
 
-  /*@ManyToOne(() => Class, { eager: true }) // Assuming a Many-to-One relationship with the Class entity
+    /*@ManyToOne(() => Class, { eager: true }) // Assuming a Many-to-One relationship with the Class entity
   @JoinColumn({ name: 'class_id' })
   class: Class;*/
 }

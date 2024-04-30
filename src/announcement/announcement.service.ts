@@ -6,13 +6,13 @@ import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class AnnouncementService extends CrudService<Announcement> {
-  constructor(
-    @InjectRepository(Announcement)
-    private announcementRepository: Repository<Announcement>,
-  ) {
-    super(announcementRepository);
-  }
-  /*create(createAnnouncementDto: CreateAnnouncementDto) {
+    constructor(
+        @InjectRepository(Announcement)
+        private announcementRepository: Repository<Announcement>,
+    ) {
+        super(announcementRepository);
+    }
+    /*create(createAnnouncementDto: CreateAnnouncementDto) {
     return 'This action adds a new announcement';
   }
 

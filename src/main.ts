@@ -8,43 +8,43 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 import { ConfigService } from '@nestjs/config';
 
 async function bootstrap() {
-  const app: NestExpressApplication = await NestFactory.create(AppModule);
-  const config: ConfigService = app.get(ConfigService);
-  const port: number = config.get<number>('SERVER_PORT');
+    const app: NestExpressApplication = await NestFactory.create(AppModule);
+    const config: ConfigService = app.get(ConfigService);
+    const port: number = config.get<number>('SERVER_PORT');
 
-  const configuration = new DocumentBuilder()
-    .setTitle('Google Classroom Clone')
-    .setDescription('The Google Classroom Clone API description')
-    .setVersion('1.0')
-    .addTag('classroom')
-    .build();
+    const configuration = new DocumentBuilder()
+        .setTitle('Google Classroom Clone')
+        .setDescription('The Google Classroom Clone API description')
+        .setVersion('1.0')
+        .addTag('classroom')
+        .build();
 
-  const document = SwaggerModule.createDocument(app, configuration);
+    const document = SwaggerModule.createDocument(app, configuration);
 
-  SwaggerModule.setup('api', app, document);
+    SwaggerModule.setup('api', app, document);
 
-  app.useGlobalPipes(
-    new ValidationPipe({
-      transform: true,
-      whitelist: true,
-    }),
-  );
+    app.useGlobalPipes(
+        new ValidationPipe({
+            transform: true,
+            whitelist: true,
+        }),
+    );
 
-  // for compressing responses
-  app.use(compression.default);
+    // for compressing responses
+    app.use(compression.default);
 
-  // for basic security
-  app.use(helmet());
+    // for basic security
+    app.use(helmet());
 
-  // enabling Cross-origin resource sharing: allows resources to be requested from another domain
-  app.enableCors({
-    allowedHeaders: '*',
-    origin: '*',
-  });
+    // enabling Cross-origin resource sharing: allows resources to be requested from another domain
+    app.enableCors({
+        allowedHeaders: '*',
+        origin: '*',
+    });
 
-  await app.listen(port, () => {
-    console.log('[WEB] Listening To ', port);
-  });
+    await app.listen(port, () => {
+        console.log('[WEB] Listening To ', port);
+    });
 }
 
 bootstrap();
