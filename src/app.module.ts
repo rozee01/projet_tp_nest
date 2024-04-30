@@ -8,6 +8,8 @@ import { Post } from './posts/entities/post.entity';
 import { Files } from './posts/entities/file.entity';
 import { AnnouncementModule } from './announcement/announcement.module';
 import { Announcement } from './announcement/entities/announcement.entity';
+import { AuthModule } from './auth/auth.module';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -33,6 +35,8 @@ import { Announcement } from './announcement/entities/announcement.entity';
       },
     }),
     AnnouncementModule,
+    AuthModule,
+    UsersModule,
   ],
 })
 export class AppModule {}

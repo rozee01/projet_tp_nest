@@ -35,12 +35,16 @@ COPY . .
 
 RUN npm run build
 
+# Removes the devDependencies
+RUN npm prune --production
+
 ###### 3 Running
 
 FROM node:22-alpine AS runner
 
 WORKDIR /usr/src/app
 
+COPY --from=builder /usr/src/app/node_modules ./node_modules
 COPY --from=builder /usr/src/app/dist ./dist
 COPY --from=builder /usr/src/app/*.env .
 
