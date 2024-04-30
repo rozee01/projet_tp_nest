@@ -3,7 +3,6 @@ import { AppModule } from './app.module';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { ValidationPipe } from '@nestjs/common';
 import helmet from 'helmet';
-import * as compression from 'compression';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { ConfigService } from '@nestjs/config';
 
@@ -30,9 +29,6 @@ async function bootstrap() {
         }),
     );
 
-    // for compressing responses
-    app.use(compression.default);
-
     // for basic security
     app.use(helmet());
 
@@ -42,8 +38,8 @@ async function bootstrap() {
         origin: '*',
     });
 
-    await app.listen(port, () => {
-        console.log('[WEB] Listening To ', port);
+    await app.listen(port, async () => {
+        console.log('[WEB] Listening To ', await app.getUrl());
     });
 }
 

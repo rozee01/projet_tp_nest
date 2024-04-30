@@ -17,7 +17,7 @@ export class JWTStrategy extends PassportStrategy(Strategy) {
             secretOrKey: config.get<string>('SECRET_KEY'),
         });
     }
-    async validate(payload: JwtPayloadDto) {
+    async validate(payload: any) {
         const user = await this.authService.checkUser(payload.id);
         if (!user) throw new UnauthorizedException();
         return user;

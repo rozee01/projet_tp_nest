@@ -1,10 +1,13 @@
-import { Injectable } from '@nestjs/common';
-import { CompareHashAndPass } from 'src/common/utils/bcrypt';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { CompareHashAndPass, GetHashAndSalt } from 'src/common/utils/bcrypt';
 import { UsersService } from 'src/users/users.service';
 import { LogInDTO } from './dto/login.dto';
 import { JwtService } from '@nestjs/jwt';
 import { JwtPayloadDto } from './dto/jwt-payload.dto';
 import { User } from 'src/users/entities/user.entity';
+import { SignUpDTO } from './dto/signup.dto';
+import { validate } from 'deep-email-validator';
+import { RoleEnum } from 'src/common/enum/roles.enum';
 
 @Injectable()
 export class AuthService {
@@ -22,10 +25,51 @@ export class AuthService {
         if (!isEqual) return null;
 
         const jwtPayload = new JwtPayloadDto(user);
-        return this.jwtService.sign(jwtPayload);
+        return this.jwtService.sign({ ...jwtPayload });
     }
 
     async checkUser(id: string): Promise<User> | undefined | null {
         return await this.usersService.findOne(id);
+    }
+    async checkValid(signUp: SignUpDTO): Promise<{ valid: boolean; err: HttpException | null }> {
+        //  prevents spammers from signing up using disposable email
+        // prevent fake people from registering
+        // Uses the library "deep-email-validator"
+        const ValidationResult = validate(signUp.email);
+        const user = this.usersService.findOnebyEmail(signUp.email);
+        const { valid, reason, validators } = await ValidationResult;
+        if (!valid)
+            return {
+                valid: false,
+                err: new HttpException(
+                    {
+                        message: 'Please provide a valid email address.',
+                        reason: validators[reason].reason,
+                    },
+                    HttpStatus.BAD_REQUEST,
+                ),
+            };
+        if (await user) {
+            return {
+                valid: false,
+                err: new HttpException(
+                    {
+                        message: 'username used',
+                    },
+                    HttpStatus.BAD_REQUEST,
+                ),
+            };
+        }
+        return { valid: true, err: null };
+    }
+    async CreateUser(signUp: SignUpDTO, role: RoleEnum): Promise<{ valid: boolean; err: Error | null }> {
+        try {
+            const { password, salt } = GetHashAndSalt(signUp.password);
+            const user = await this.usersService.create({ ...signUp, password, salt, role });
+            if (!user) throw new Error("Couldn't Create User");
+        } catch (err) {
+            return { valid: false, err: err as Error };
+        }
+        return { valid: true, err: null };
     }
 }

@@ -10,6 +10,7 @@ import { AnnouncementModule } from './announcement/announcement.module';
 import { Announcement } from './announcement/entities/announcement.entity';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
+import { User } from './users/entities/user.entity';
 
 @Module({
     imports: [
@@ -29,7 +30,7 @@ import { UsersModule } from './users/users.module';
                     username: config.get<string>('DB_USERNAME'),
                     password: config.get<string>('DB_PASSWORD'),
                     database: config.get<string>('DB_NAME'),
-                    entities: [Post, Files, Announcement],
+                    entities: [Post, Files, Announcement, User],
                     synchronize: true, // never use True in production
                 };
             },
