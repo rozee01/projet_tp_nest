@@ -1,9 +1,20 @@
+import { IsEmail, IsEnum, IsNotEmpty, IsString, IsUUID } from 'class-validator';
+import { RoleEnum } from 'src/common/enum/roles.enum';
 import { User } from 'src/users/entities/user.entity';
 
 export class JwtPayloadDto {
+    @IsNotEmpty()
+    @IsUUID()
     id: string;
+
+    @IsNotEmpty()
+    @IsString()
+    @IsEmail()
     email: string;
-    role: string;
+
+    @IsEnum(RoleEnum)
+    @IsNotEmpty()
+    role: RoleEnum;
 
     constructor(partial: Partial<User>) {
         if (!partial.id || !partial.email || !partial.role) {

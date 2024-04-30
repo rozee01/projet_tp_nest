@@ -4,6 +4,7 @@ import { UsersService } from 'src/users/users.service';
 import { LogInDTO } from './dto/login.dto';
 import { JwtService } from '@nestjs/jwt';
 import { JwtPayloadDto } from './dto/jwt-payload.dto';
+import { User } from 'src/users/entities/user.entity';
 
 @Injectable()
 export class AuthService {
@@ -22,5 +23,9 @@ export class AuthService {
 
         const jwtPayload = new JwtPayloadDto(user);
         return this.jwtService.sign(jwtPayload);
+    }
+
+    async checkUser(id: string): Promise<User> | undefined | null {
+        return await this.usersService.findOne(id);
     }
 }
