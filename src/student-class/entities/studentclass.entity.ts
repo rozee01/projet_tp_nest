@@ -1,13 +1,13 @@
 import { Entity, PrimaryColumn, ManyToOne } from 'typeorm';
-import { User } from 'src/user/entities/user.entity';
 import { Class } from 'src/class/entities/class.entity';
+import { Student } from 'src/student/entities/student.entity';
 @Entity()
 export class StudentClass {
     @PrimaryColumn()
     student_id: string;
 
-    @ManyToOne(() => User, user => user.studentClasses)
-    student: User;
+    @ManyToOne(() => Student, student => student.studentClasses)
+    student: Student;
 
     @PrimaryColumn( )
     class_id: string;

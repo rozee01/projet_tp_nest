@@ -1,31 +1,34 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/require-await */
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 
 import { CommonModule } from './common/common.module';
 import { PostsModule } from './posts/posts.module';
-import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
+import {  TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { Post } from './posts/entities/post.entity';
 import { File } from './files/entities/file.entity';
 import { FilesModule } from './files/files.module';
 import { AnnouncementModule } from './announcement/announcement.module';
 import { Announcement } from './announcement/entities/announcement.entity';
 import { AuthModule } from './auth/auth.module';
+
+
+
+import { ClassModule } from './class/class.module';
+import { Class } from './class/entities/class.entity';
 import { UsersModule } from './users/users.module';
 import { User } from './users/entities/user.entity';
-
-import { AuthModule } from './auth/auth.module';
-import { UsersModule } from './users/users.module';
-import { User } from './users/entities/user.entity';
-
-// import { ClassModule } from './class/class.module';
-// import { Class } from './class/entities/class.entity';
-// import { UserModule } from './user/user.module';
-// import { User } from './user/entities/user.entity';
-// import { StudentClassModule } from './student-class/student-class.module';
-// import { StudentClass } from './student-class/entities/studentclass.entity';
-
+import { StudentClassModule } from './student-class/student-class.module';
+import { StudentClass } from './student-class/entities/studentclass.entity';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { Student } from './student/entities/student.entity';
+import { StudentModule } from './student/student.module';
 // @Module({
 //   imports: [
+//     UsersModule,
 //     CommonModule,
 //     PostsModule,
 //     ClassModule,
@@ -36,16 +39,16 @@ import { User } from './users/entities/user.entity';
 //       username: 'postgres',
 //       password: '0000',
 //       database: 'ClassroomDb', 
-//       entities: [Post, File, Announcement, Class, User, StudentClass],
+//       entities: [Post, File, Announcement, Class, User, StudentClass, Student],
 //       synchronize: true,
 //     }),
 //     FilesModule,
 //     AnnouncementModule,
-//     ClassModule,
-//     UserModule,
+//     UsersModule,
 //     StudentClassModule,
 //   ],
 // })
+
 @Module({
     imports: [
         ConfigModule.forRoot({
@@ -64,7 +67,7 @@ import { User } from './users/entities/user.entity';
                     username: config.get<string>('DB_USERNAME'),
                     password: config.get<string>('DB_PASSWORD'),
                     database: config.get<string>('DB_NAME'),
-                    entities: [Post, File, Announcement, User],
+                    entities: [Post, File, Announcement, User, Student, StudentClass, Class],
                     synchronize: true, // never use True in production
                 };
             },
@@ -72,6 +75,11 @@ import { User } from './users/entities/user.entity';
         AnnouncementModule,
         AuthModule,
         UsersModule,
+        FilesModule,
+        ClassModule,
+        StudentClassModule,
+        StudentModule,
     ],
 })
+
 export class AppModule {}
