@@ -26,6 +26,8 @@ import { StudentClass } from './student-class/entities/studentclass.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Student } from './student/entities/student.entity';
 import { StudentModule } from './student/student.module';
+import { TeacherModule } from './teacher/teacher.module';
+import { Teacher } from './teacher/entities/teacher.entity';
 // @Module({
 //   imports: [
 //     UsersModule,
@@ -54,7 +56,7 @@ import { StudentModule } from './student/student.module';
         ConfigModule.forRoot({
             envFilePath: '.env',
             isGlobal: true,
-        }),
+        }), 
         CommonModule,
         PostsModule,
         TypeOrmModule.forRootAsync({
@@ -67,11 +69,12 @@ import { StudentModule } from './student/student.module';
                     username: config.get<string>('DB_USERNAME'),
                     password: config.get<string>('DB_PASSWORD'),
                     database: config.get<string>('DB_NAME'),
-                    entities: [Post, File, Announcement, User, Student, StudentClass, Class],
+                    entities: [Post, File, Announcement, User, Student, StudentClass, Class, Teacher],
                     synchronize: true, // never use True in production
-                };
+                }; 
             },
         }),
+        TeacherModule,
         AnnouncementModule,
         AuthModule,
         UsersModule,
@@ -79,6 +82,7 @@ import { StudentModule } from './student/student.module';
         ClassModule,
         StudentClassModule,
         StudentModule,
+        TeacherModule,
     ],
 })
 
