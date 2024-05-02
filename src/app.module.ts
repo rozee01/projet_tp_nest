@@ -21,8 +21,6 @@ import { Subject } from './subject/entities/subject.entity';
             envFilePath: '.env',
             isGlobal: true,
         }),
-        CommonModule,
-        PostsModule,
         TypeOrmModule.forRootAsync({
             inject: [ConfigService],
             useFactory: async (config: ConfigService): Promise<TypeOrmModuleOptions> => {
@@ -43,6 +41,8 @@ import { Subject } from './subject/entities/subject.entity';
         UsersModule,
         FilesModule,
         SubjectModule,
+        CommonModule,
+        PostsModule,
     ],
 })
 export class AppModule {}
