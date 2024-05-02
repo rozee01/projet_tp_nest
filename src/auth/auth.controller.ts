@@ -16,22 +16,17 @@ export class AuthController {
 
     @Post('signup/student')
     async signupS(@Body() signUp: SignUpDTO) {
-        console.log('Hit Server!!!');
-
         const { valid, err } = await this.authService.checkValid(signUp);
         if (!valid) {
             if (!err) throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST);
             throw err;
         }
-        console.log('Hit Server2!!!');
-
         const result = await this.authService.CreateUser(signUp, RoleEnum.STUDENT);
         if (!result) throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST);
         if (!result.valid) {
             if (!result.err) throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST);
             throw result.err;
         }
-        console.log('Hit Server3!!!');
     }
 
     @Post('signup/teacher')
