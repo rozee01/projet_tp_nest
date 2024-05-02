@@ -1,10 +1,13 @@
 import { IsNotEmpty, IsString } from 'class-validator';
+export class CreateSubjectDto {
+    @IsNotEmpty()
+    @IsString()
+    name: string;
 
-export class CreatePostDto {
     @IsNotEmpty()
     @IsString()
-    title: string;
+    description: string;
+
     @IsNotEmpty()
-    @IsString()
-    content: string;
+    isActive: boolean;
 }
