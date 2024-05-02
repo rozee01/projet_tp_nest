@@ -6,14 +6,12 @@ export class StudentClass {
     @PrimaryColumn()
     student_id: string;
 
-    @ManyToOne(() => Student, student => student.studentClasses)
+    @ManyToOne(() => Student, (student) => student.studentClasses)
     student: Student;
 
-    @PrimaryColumn( )
+    @PrimaryColumn()
     class_id: string;
 
-    @ManyToOne(() => Class, classEntity => classEntity.studentClasses)
+    @ManyToOne(() => Class, (classEntity) => classEntity.studentClasses)
     class: Class;
-
-
 }

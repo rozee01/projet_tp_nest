@@ -3,33 +3,29 @@ import { ClassService } from './class.service';
 import { UpdateClassDto } from './dto/update-class.dto';
 import { CreateClassDto } from './dto/create-class.dto';
 
-
 @Controller('class')
 export class ClassController {
-    constructor(private classService : ClassService){
-
-    }
+    constructor(private classService: ClassService) {}
     @Post('')
-    create(@Body() createClassDto : CreateClassDto){
-        return this.classService.create(createClassDto)
-
+    create(@Body() createClassDto: CreateClassDto) {
+        return this.classService.create(createClassDto);
     }
     @Get()
-    findAll(){
-        return this.classService.findAll()
+    findAll() {
+        return this.classService.findAll();
     }
     @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.classService.findOne(id);
-  }
+    findOne(@Param('id') id: string) {
+        return this.classService.findOne(id);
+    }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateClassDto: UpdateClassDto) {
-    return this.classService.update(id, updateClassDto);
-  }
+    @Patch(':id')
+    update(@Param('id') id: string, @Body() updateClassDto: UpdateClassDto) {
+        return this.classService.update(id, updateClassDto);
+    }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.classService.remove(id);
-  }
+    @Delete(':id')
+    remove(@Param('id') id: string) {
+        return this.classService.remove(id);
+    }
 }

@@ -7,10 +7,10 @@ import { Class } from './entities/class.entity';
 
 @Injectable()
 export class ClassService extends CrudService<Class> {
-  constructor(
-    @InjectRepository(Class)
-    private classRepository: Repository<Class>,
-  ) {
-    super(classRepository);
-  }
+    constructor(
+        @InjectRepository(Class)
+        private classRepository: Repository<Class>,
+    ) {
+        super(classRepository);
+    }
 }

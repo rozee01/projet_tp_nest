@@ -1,4 +1,4 @@
-import { IsString } from "class-validator";
+import { IsString } from 'class-validator';
 
 export class CreateStudentClassDto {
     @IsString()
@@ -6,5 +6,4 @@ export class CreateStudentClassDto {
 
     @IsString()
     class_id: string;
-  }
-  
+}

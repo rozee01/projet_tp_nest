@@ -7,16 +7,14 @@ import { Class } from 'src/class/entities/class.entity';
 
 @Entity()
 export class Teacher extends User {
-    
-    @OneToMany(() => Class, classEntity => classEntity.teacher)
+    @OneToMany(() => Class, (classEntity) => classEntity.teacher)
     classesTaught: Class[];
 
     constructor() {
         super();
-    
+
         this.role = RoleEnum.TEACHER;
-      }
+    }
 
-
-  // You can add additional fields specific to the Teacher entity here
+    // You can add additional fields specific to the Teacher entity here
 }

@@ -8,7 +8,8 @@ export class StudentsController {
     constructor(private readonly studentsService: StudentService) {}
 
     @Post()
-    create(@Body() createStudentDto: CreateStudentDto) { // Use the appropriate DTO
+    create(@Body() createStudentDto: CreateStudentDto) {
+        // Use the appropriate DTO
         return this.studentsService.create(createStudentDto);
     }
 

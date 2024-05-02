@@ -31,9 +31,8 @@ export class TeachersController {
     remove(@Param('id') id: string) {
         return this.teachersService.remove(id);
     }
-     @Post('link-class')
-    async linkClassToTeacher(@Body() body:{ teacherId : string , classId : string}) {
+    @Post('link-class')
+    async linkClassToTeacher(@Body() body: { teacherId: string; classId: string }) {
         return this.teachersService.linkClassToTeacher(body.teacherId, body.classId);
     }
-    
 }

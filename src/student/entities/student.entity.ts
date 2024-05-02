@@ -4,7 +4,6 @@ import { StudentClass } from 'src/student-class/entities/studentclass.entity';
 
 @Entity()
 export class Student extends User {
-    @OneToMany(() => StudentClass, studentClass => studentClass.student)
+    @OneToMany(() => StudentClass, (studentClass) => studentClass.student)
     studentClasses: StudentClass[];
-    
 }

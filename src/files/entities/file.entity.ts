@@ -6,12 +6,8 @@ export class File {
     id: string;
     @Column()
     url: string;
-    @Column ()
-    nom:string;
-    @ManyToOne(
-        ()=>Post,
-        (post)=>post.files,
-        {eager:true}
-    )
-    post:Post;
+    @Column()
+    nom: string;
+    @ManyToOne(() => Post, (post) => post.files, { eager: true })
+    post: Post;
 }

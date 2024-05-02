@@ -8,8 +8,8 @@ import { Repository } from 'typeorm';
 import { RoleEnum } from 'src/common/enum/roles.enum';
 
 @Injectable()
-export class TeacherService extends CrudService<Teacher>{
-    constructor (
+export class TeacherService extends CrudService<Teacher> {
+    constructor(
         @InjectRepository(Teacher)
         private teacherRepository: Repository<Teacher>,
         @InjectRepository(Class)
@@ -20,7 +20,7 @@ export class TeacherService extends CrudService<Teacher>{
 
     async create(teacherData: Partial<Teacher>): Promise<Teacher> {
         teacherData.role = RoleEnum.TEACHER;
-        teacherData.classesTaught= []
+        teacherData.classesTaught = [];
         return super.create(teacherData);
     }
 
@@ -28,7 +28,7 @@ export class TeacherService extends CrudService<Teacher>{
         const teacher = await this.teacherRepository.findOne({ where: { id: teacherId } });
 
         if (!teacher) {
-            throw new NotFoundException('Teacher not found'); 
+            throw new NotFoundException('Teacher not found');
         }
         if (!teacher.classesTaught) {
             teacher.classesTaught = [];

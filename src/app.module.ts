@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { CommonModule } from './common/common.module';
 import { PostsModule } from './posts/posts.module';
-import {  TypeOrmModuleOptions } from '@nestjs/typeorm';
+import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { Post } from './posts/entities/post.entity';
 import { File } from './files/entities/file.entity';
 import { FilesModule } from './files/files.module';
@@ -38,9 +38,9 @@ import { Teacher } from './teacher/entities/teacher.entity';
                     username: config.get<string>('DB_USERNAME'),
                     password: config.get<string>('DB_PASSWORD'),
                     database: config.get<string>('DB_NAME'),
-                    entities: [Post, File, Announcement, User,Subject, Student, StudentClass, Class, Teacher],
+                    entities: [Post, File, Announcement, User, Subject, Student, StudentClass, Class, Teacher],
                     synchronize: true, // never use True in production
-                }; 
+                };
             },
         }),
         TeacherModule,
@@ -58,5 +58,4 @@ import { Teacher } from './teacher/entities/teacher.entity';
         TeacherModule,
     ],
 })
-
 export class AppModule {}
