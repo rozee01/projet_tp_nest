@@ -1,5 +1,5 @@
 import { SoftDelete } from 'src/common/database/softdelete.entity';
-import { Entity, PrimaryGeneratedColumn, Column, BaseEntity } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 
 @Entity()
 export class Subject extends SoftDelete {

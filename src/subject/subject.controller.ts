@@ -3,7 +3,6 @@ import { SubjectService } from './subject.service';
 import { CreateSubjectDto } from './dto/create-subject.dto';
 import { UpdateSubjectDto } from './dto/update-subject.dto';
 import { JWTGuard } from 'src/auth/guard/jwt.guard';
-import { User } from 'src/users/entities/user.entity';
 import { UserDecorator } from 'src/common/decorators/user.decorator';
 import { JwtPayloadDto } from 'src/auth/dto/jwt-payload.dto';
 import { RoleEnum } from 'src/common/enum/roles.enum';

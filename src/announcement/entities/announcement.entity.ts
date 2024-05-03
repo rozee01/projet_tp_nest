@@ -1,7 +1,5 @@
 import { SoftDelete } from 'src/common/database/softdelete.entity';
-import { Timestamp } from 'src/common/database/timestamp.entity';
 import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
-//import { Class } from './Class.entity'; // Assuming you have a Class entity defined
 
 @Entity()
 export class Announcement extends SoftDelete {
