@@ -1,14 +1,21 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, UnauthorizedException } from '@nestjs/common';
 import { SubjectService } from './subject.service';
 import { CreateSubjectDto } from './dto/create-subject.dto';
 import { UpdateSubjectDto } from './dto/update-subject.dto';
+import { JWTGuard } from 'src/auth/guard/jwt.guard';
+import { User } from 'src/users/entities/user.entity';
+import { UserDecorator } from 'src/common/decorators/user.decorator';
+import { JwtPayloadDto } from 'src/auth/dto/jwt-payload.dto';
+import { RoleEnum } from 'src/common/enum/roles.enum';
 
 @Controller('subject')
 export class SubjectController {
     constructor(private readonly subjectService: SubjectService) {}
 
     @Post()
-    create(@Body() createSubjectDto: CreateSubjectDto) {
+    @UseGuards(JWTGuard)
+    create(@UserDecorator() user: JwtPayloadDto, @Body() createSubjectDto: CreateSubjectDto) {
+        if (user.role == RoleEnum.STUDENT) throw new UnauthorizedException();
         return this.subjectService.create(createSubjectDto);
     }
 
@@ -23,12 +30,18 @@ export class SubjectController {
     }
 
     @Patch(':id')
-    update(@Param('id') id: string, @Body() updateSubjectDto: UpdateSubjectDto) {
+    @UseGuards(JWTGuard)
+    update(@UserDecorator() user: JwtPayloadDto, @Param('id') id: string, @Body() updateSubjectDto: UpdateSubjectDto) {
+        if (user.role == RoleEnum.STUDENT) throw new UnauthorizedException();
+
         return this.subjectService.update(id, updateSubjectDto);
     }
 
     @Delete(':id')
-    remove(@Param('id') id: string) {
+    @UseGuards(JWTGuard)
+    remove(@UserDecorator() user: JwtPayloadDto, @Param('id') id: string) {
+        if (user.role == RoleEnum.STUDENT) throw new UnauthorizedException();
+
         return this.subjectService.remove(id);
     }
 }

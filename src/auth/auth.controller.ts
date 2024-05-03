@@ -14,38 +14,7 @@ export class AuthController {
         return req.user;
     }
 
-    @Post('signup/student')
-    async signupS(@Body() signUp: SignUpDTO) {
-        const { valid, err } = await this.authService.checkValid(signUp);
-        if (!valid) {
-            if (!err) throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST);
-            throw err;
-        }
-        const result = await this.authService.CreateUser(signUp, RoleEnum.STUDENT);
-        if (!result) throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST);
-        if (!result.valid) {
-            if (!result.err) throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST);
-            throw result.err;
-        }
-    }
-
-    @Post('signup/teacher')
-    async signupT(@Body() signUp: SignUpDTO) {
-        const { valid, err } = await this.authService.checkValid(signUp);
-        if (!valid) {
-            if (!err) throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST);
-            throw err;
-        }
-        const result = await this.authService.CreateUser(signUp, RoleEnum.TEACHER);
-        if (!result) throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST);
-        if (!result.valid) {
-            if (!result.err) throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST);
-            throw result.err;
-        }
-    }
-
     // Temporary to create first admin
-
     @Post('signup/admin')
     async signupA(@Body() signUp: SignUpDTO) {
         const { valid, err } = await this.authService.checkValid(signUp);

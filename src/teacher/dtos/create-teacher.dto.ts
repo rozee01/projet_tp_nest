@@ -13,7 +13,4 @@ export class CreateTeacherDto {
 
     @IsNotEmpty()
     password: string;
-
-    @IsNotEmpty()
-    salt: string;
 }

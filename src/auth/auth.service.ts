@@ -16,7 +16,7 @@ export class AuthService {
         private readonly jwtService: JwtService,
     ) {}
 
-    async validateUser({ email, password }: LogInDTO): Promise<string> | undefined | null {
+    async validateUser({ email, password }: LogInDTO): Promise<string | null> {
         const user = await this.usersService.findOnebyEmail(email);
         if (!user) return null;
 
@@ -28,7 +28,7 @@ export class AuthService {
         return this.jwtService.sign({ ...jwtPayload });
     }
 
-    async checkUser(id: string): Promise<User> | undefined | null {
+    async checkUser(id: string): Promise<User | null> {
         return await this.usersService.findOne(id);
     }
     async checkValid(signUp: SignUpDTO): Promise<{ valid: boolean; err: HttpException | null }> {
@@ -37,18 +37,40 @@ export class AuthService {
         // Uses the library "deep-email-validator"
         const ValidationResult = validate(signUp.email);
         const user = this.usersService.findOnebyEmail(signUp.email);
-        const { valid, reason, validators } = await ValidationResult;
-        if (!valid)
+        const { valid, validators } = await ValidationResult;
+        if (!valid) {
+            let msg = '';
+            if (validators.disposable) {
+                msg += validators.disposable;
+            }
+            if (validators.mx) {
+                if (msg != '') msg += ' AND, ';
+                msg += validators.mx;
+            }
+            if (validators.regex) {
+                if (msg != '') msg += ' AND, ';
+                msg += validators.regex;
+            }
+            if (validators.smtp) {
+                if (msg != '') msg += ' AND, ';
+                msg += validators.smtp;
+            }
+            if (validators.typo) {
+                if (msg != '') msg += ' AND, ';
+                msg += validators.typo;
+            }
+            if (msg == '') msg = 'Invalid Mail';
             return {
                 valid: false,
                 err: new HttpException(
                     {
                         message: 'Please provide a valid email address.',
-                        reason: validators[reason].reason,
+                        reason: msg,
                     },
                     HttpStatus.BAD_REQUEST,
                 ),
             };
+        }
         if (await user) {
             return {
                 valid: false,

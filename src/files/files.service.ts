@@ -8,7 +8,7 @@ import { File } from './entities/file.entity';
 export class FilesService extends CrudService<File> {
     constructor(
         @InjectRepository(File)
-        private fileRepository: Repository<File>,
+        private readonly fileRepository: Repository<File>,
     ) {
         super(fileRepository);
     }

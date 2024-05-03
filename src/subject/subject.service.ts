@@ -8,7 +8,7 @@ import { Repository } from 'typeorm';
 export class SubjectService extends CrudService<Subject> {
     constructor(
         @InjectRepository(Subject)
-        private subjectRepository: Repository<Subject>,
+        private readonly subjectRepository: Repository<Subject>,
     ) {
         super(subjectRepository);
     }

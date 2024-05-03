@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-return */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
 import { Entity, OneToMany } from 'typeorm';
 import { User } from '../../users/entities/user.entity';
 import { RoleEnum } from 'src/common/enum/roles.enum'; // Import RoleEnum
@@ -12,7 +10,6 @@ export class Teacher extends User {
 
     constructor() {
         super();
-
         this.role = RoleEnum.TEACHER;
     }
 

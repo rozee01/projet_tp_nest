@@ -12,7 +12,7 @@ export class UsersService extends CrudService<User> {
     ) {
         super(userRepository);
     }
-    async findOnebyEmail(email: string): Promise<User> | null {
+    async findOnebyEmail(email: string): Promise<User | null> {
         return await this.userRepository.findOneBy({ email });
     }
 }

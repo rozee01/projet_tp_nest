@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unnecessary-condition */
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { CrudService } from 'src/common/service/crud.service';
 import { Teacher } from './entities/teacher.entity';
@@ -11,14 +10,14 @@ import { RoleEnum } from 'src/common/enum/roles.enum';
 export class TeacherService extends CrudService<Teacher> {
     constructor(
         @InjectRepository(Teacher)
-        private teacherRepository: Repository<Teacher>,
+        private readonly teacherRepository: Repository<Teacher>,
         @InjectRepository(Class)
-        private classRepository: Repository<Class>, // Inject the Class repository
+        private readonly classRepository: Repository<Class>,
     ) {
         super(teacherRepository);
     }
 
-    async create(teacherData: Partial<Teacher>): Promise<Teacher> {
+    async create(teacherData: Partial<Teacher>): Promise<Teacher | null> {
         teacherData.role = RoleEnum.TEACHER;
         teacherData.classesTaught = [];
         return super.create(teacherData);

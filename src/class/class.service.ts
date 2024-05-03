@@ -9,7 +9,7 @@ import { Class } from './entities/class.entity';
 export class ClassService extends CrudService<Class> {
     constructor(
         @InjectRepository(Class)
-        private classRepository: Repository<Class>,
+        private readonly classRepository: Repository<Class>,
     ) {
         super(classRepository);
     }

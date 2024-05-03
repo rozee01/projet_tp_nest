@@ -1,14 +1,20 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, UnauthorizedException } from '@nestjs/common';
 import { FilesService } from './files.service';
 import { CreateFileDto } from './dto/create-file.dto';
 import { UpdateFileDto } from './dto/update-file.dto';
+import { JWTGuard } from 'src/auth/guard/jwt.guard';
+import { JwtPayloadDto } from 'src/auth/dto/jwt-payload.dto';
+import { UserDecorator } from 'src/common/decorators/user.decorator';
+import { RoleEnum } from 'src/common/enum/roles.enum';
 
 @Controller('files')
 export class FilesController {
     constructor(private readonly filesService: FilesService) {}
 
     @Post()
-    create(@Body() createFileDto: CreateFileDto) {
+    @UseGuards(JWTGuard)
+    create(@UserDecorator() user: JwtPayloadDto, @Body() createFileDto: CreateFileDto) {
+        if (user.role == RoleEnum.STUDENT) throw new UnauthorizedException();
         return this.filesService.create(createFileDto);
     }
 
@@ -23,12 +29,16 @@ export class FilesController {
     }
 
     @Patch(':id')
-    update(@Param('id') id: string, @Body() updateFileDto: UpdateFileDto) {
+    @UseGuards(JWTGuard)
+    update(@UserDecorator() user: JwtPayloadDto, @Param('id') id: string, @Body() updateFileDto: UpdateFileDto) {
+        if (user.role == RoleEnum.STUDENT) throw new UnauthorizedException();
         return this.filesService.update(id, updateFileDto);
     }
 
     @Delete(':id')
-    remove(@Param('id') id: string) {
+    @UseGuards(JWTGuard)
+    remove(@UserDecorator() user: JwtPayloadDto, @Param('id') id: string) {
+        if (user.role == RoleEnum.STUDENT) throw new UnauthorizedException();
         return this.filesService.remove(id);
     }
 }

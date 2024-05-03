@@ -1,12 +1,10 @@
-/* eslint-disable prettier/prettier */
-
-import { Timestamp } from '../../common/database/timestamp.entity';
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToOne } from 'typeorm';
 import { StudentClass } from 'src/student-class/entities/studentclass.entity';
 import { Teacher } from 'src/teacher/entities/teacher.entity';
+import { SoftDelete } from 'src/common/database/softdelete.entity';
 
 @Entity()
-export class Class extends Timestamp {
+export class Class extends SoftDelete {
     @PrimaryGeneratedColumn('uuid')
     id: string;
 
