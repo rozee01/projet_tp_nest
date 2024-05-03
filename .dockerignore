@@ -1,0 +1,32 @@
+# Dependency directories
+node_modules
+npm-debug.log
+
+# Build output
+dist
+
+# Version control
+.git
+.gitignore
+
+
+# IDE/Editors
+.vscode
+.idea
+*.swp
+*.swo
+
+# Operating system generated files
+.DS_Store
+Thumbs.db
+
+# Optional: Exclude npm lock files if you prefer to regenerate during build
+# package-lock.json
+# npm-shrinkwrap.json
+
+# Logs
+logs
+*.log
+
+# Debug files
+*.tsbuildinfo

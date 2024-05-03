@@ -1,18 +1,17 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, BaseEntity } from 'typeorm';
+import { SoftDelete } from 'src/common/database/softdelete.entity';
+import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 
 @Entity()
-export class Subject extends BaseEntity{
-  @PrimaryGeneratedColumn()
-  id: string;
+export class Subject extends SoftDelete {
+    @PrimaryGeneratedColumn('uuid')
+    id: string;
 
-  @Column()
-  name: string;
+    @Column({ unique: true, nullable: false })
+    name: string;
 
-  @Column()
-  description: string;
+    @Column({ nullable: true })
+    description: string;
 
-  @Column({ default: true })
-  isActive: boolean;
-
+    @Column({ default: true })
+    isActive: boolean;
 }
-

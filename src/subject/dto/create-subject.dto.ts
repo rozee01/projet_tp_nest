@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString} from 'class-validator';
+import { IsNotEmpty, IsString } from 'class-validator';
 export class CreateSubjectDto {
     @IsNotEmpty()
     @IsString()
@@ -9,7 +9,5 @@ export class CreateSubjectDto {
     description: string;
 
     @IsNotEmpty()
-    isActive : boolean
-
+    isActive: boolean;
 }
-

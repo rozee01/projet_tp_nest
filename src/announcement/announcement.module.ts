@@ -5,8 +5,8 @@ import { Announcement } from './entities/announcement.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({
-  controllers: [AnnouncementController],
-  providers: [AnnouncementService],
-  imports:[TypeOrmModule.forFeature([Announcement])]
+    controllers: [AnnouncementController],
+    providers: [AnnouncementService],
+    imports: [TypeOrmModule.forFeature([Announcement])],
 })
 export class AnnouncementModule {}

@@ -5,12 +5,11 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
 @Injectable()
-export class SubjectService extends CrudService<Subject>{
-  constructor(
-    @InjectRepository(Subject)
-    private subjectRepository:Repository<Subject>,
-  )
-  {
-    super(subjectRepository);
-  }
+export class SubjectService extends CrudService<Subject> {
+    constructor(
+        @InjectRepository(Subject)
+        private readonly subjectRepository: Repository<Subject>,
+    ) {
+        super(subjectRepository);
+    }
 }

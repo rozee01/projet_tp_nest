@@ -1,30 +1,55 @@
 import { Module } from '@nestjs/common';
-import { CommonModule } from './common/common.module';
-import { PostsModule } from './posts/posts.module';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Post } from './posts/entities/post.entity';
-import { File } from './files/entities/file.entity';
-import { FilesModule } from './files/files.module';
-import { AnnouncementModule } from './announcement/announcement.module';
-import { Announcement } from './announcement/entities/announcement.entity';
-import { SubjectModule } from './subject/subject.module';
-import { Subject } from './subject/entities/subject.entity';
+import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 
+import { AuthModule } from './auth/auth.module';
+import { FilesModule } from './files/files.module';
+import { ClassModule } from './class/class.module';
+import { UsersModule } from './users/users.module';
+import { PostsModule } from './posts/posts.module';
+import { CommonModule } from './common/common.module';
+import { SubjectModule } from './subject/subject.module';
+import { StudentModule } from './student/student.module';
+import { TeacherModule } from './teacher/teacher.module';
+import { AnnouncementModule } from './announcement/announcement.module';
+import { StudentClassModule } from './student-class/student-class.module';
+
+import { entitiesList } from './common/entities/entities';
 @Module({
-  imports: [CommonModule, PostsModule,
-    TypeOrmModule.forRoot({
-      type: 'postgres',
-      host: 'localhost',
-      port: 5432,
-      username: 'postgres',
-      password: '285',
-      database: 'ClassroomDb',
-      entities: [Post,File,Announcement,Subject],
-      synchronize: true,
-    }),
-    FilesModule,
-    AnnouncementModule,
-    SubjectModule,
-  ],
+    imports: [
+        ConfigModule.forRoot({
+            envFilePath: '.env',
+            isGlobal: true,
+        }),
+        TypeOrmModule.forRootAsync({
+            inject: [ConfigService],
+            useFactory: async (config: ConfigService): Promise<TypeOrmModuleOptions> => {
+                return {
+                    type: 'postgres',
+                    host: config.get<string>('DB_HOST'),
+                    port: config.get<number>('DB_PORT'),
+                    username: config.get<string>('DB_USERNAME'),
+                    password: config.get<string>('DB_PASSWORD'),
+                    database: config.get<string>('DB_NAME'),
+                    entities: entitiesList,
+                    synchronize: true, // never use True in production
+                };
+            },
+        }),
+        AuthModule,
+        UsersModule,
+        FilesModule,
+        PostsModule,
+        FilesModule,
+        ClassModule,
+        CommonModule,
+        StudentModule,
+        TeacherModule,
+        TeacherModule,
+        SubjectModule,
+        AnnouncementModule,
+        StudentClassModule,
+    ],
 })
 export class AppModule {}

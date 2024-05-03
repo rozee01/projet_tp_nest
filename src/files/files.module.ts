@@ -4,9 +4,8 @@ import { FilesController } from './files.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({
-  controllers: [FilesController],
-  providers: [FilesService],
-  imports:[TypeOrmModule.forFeature([File])]
-
+    controllers: [FilesController],
+    providers: [FilesService],
+    imports: [TypeOrmModule.forFeature([File])],
 })
 export class FilesModule {}

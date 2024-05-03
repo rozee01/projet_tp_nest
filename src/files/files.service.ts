@@ -5,12 +5,11 @@ import { Repository } from 'typeorm';
 import { File } from './entities/file.entity';
 
 @Injectable()
-export class FilesService extends CrudService<File>{
-  constructor(
-    @InjectRepository(File)
-    private fileRepository:Repository<File>,
-  )
-  {
-    super(fileRepository);
-  }
+export class FilesService extends CrudService<File> {
+    constructor(
+        @InjectRepository(File)
+        private readonly fileRepository: Repository<File>,
+    ) {
+        super(fileRepository);
+    }
 }
