@@ -21,7 +21,6 @@ export class AuthService {
         if (!user) return null;
 
         const isEqual = CompareHashAndPass(password, user.password, user.salt);
-
         if (!isEqual) return null;
 
         const jwtPayload = new JwtPayloadDto(user);
@@ -29,7 +28,8 @@ export class AuthService {
     }
 
     async checkUser(id: string): Promise<User | null> {
-        return await this.usersService.findOne(id);
+        const user = await this.usersService.findOne(id);
+        return user;
     }
     async checkValid(signUp: SignUpDTO): Promise<{ valid: boolean; err: HttpException | null }> {
         //  prevents spammers from signing up using disposable email

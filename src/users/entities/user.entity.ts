@@ -2,7 +2,7 @@ import { SoftDelete } from 'src/common/database/softdelete.entity';
 import { RoleEnum } from 'src/common/enum/roles.enum';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity()
+@Entity('users')
 export class User extends SoftDelete {
     @PrimaryGeneratedColumn('uuid')
     id: string;
