@@ -9,9 +9,10 @@ import {
     HttpException,
     HttpStatus,
     UseGuards,
+    BadRequestException,
     UnauthorizedException,
 } from '@nestjs/common';
-import { StudentService } from './student.service'; // Import the service
+import { StudentService } from './student.service';
 import { UpdateStudentDto } from './dto/update-student.dto';
 import { SignUpDTO } from 'src/auth/dto/signup.dto';
 import { AuthService } from 'src/auth/auth.service';
@@ -19,8 +20,9 @@ import { RoleEnum } from 'src/common/enum/roles.enum';
 import { JWTGuard } from 'src/auth/guard/jwt.guard';
 import { JwtPayloadDto } from 'src/auth/dto/jwt-payload.dto';
 import { UserDecorator } from 'src/common/decorators/user.decorator';
+import { Student } from './entities/student.entity';
 
-@Controller('student')
+@Controller('students')
 export class StudentController {
     constructor(
         private readonly studentsService: StudentService,
@@ -40,9 +42,7 @@ export class StudentController {
             if (!result.err) throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST);
             throw result.err;
         }
-        const res = await this.studentsService.create({ ...signUp, role: RoleEnum.STUDENT });
-        if (!res) throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST);
-        return res;
+        return this.studentsService.create({ user: result.user });
     }
     @Get()
     @UseGuards(JWTGuard)
@@ -58,15 +58,17 @@ export class StudentController {
 
     @Patch(':id')
     @UseGuards(JWTGuard)
-    update(@UserDecorator() user: JwtPayloadDto, @Param('id') id: string, @Body() updateStudentDto: UpdateStudentDto) {
-        if (user.role != RoleEnum.ADMIN && user.id != id) throw new UnauthorizedException();
+    update(@UserDecorator() user: JwtPayloadDto, @Param('id') id: string, @Body() updateStudentDto: Partial<Student>) {
+        if (user.role != RoleEnum.ADMIN && user.id != id)
+            throw new UnauthorizedException('You do not have permission to update this student.');
         return this.studentsService.update(id, updateStudentDto);
     }
 
     @Delete(':id')
     @UseGuards(JWTGuard)
     remove(@UserDecorator() user: JwtPayloadDto, @Param('id') id: string) {
-        if (user.role != RoleEnum.ADMIN && user.id != id) throw new UnauthorizedException();
+        if (user.role != RoleEnum.ADMIN && user.id != id)
+            throw new UnauthorizedException('You are not allowed to delete this student.');
         return this.studentsService.remove(id);
     }
 }

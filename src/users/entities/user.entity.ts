@@ -1,10 +1,12 @@
 import { SoftDelete } from 'src/common/database/softdelete.entity';
 import { RoleEnum } from 'src/common/enum/roles.enum';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('users')
+@Index(['email'], { unique: true }) // Ensures quick look-up and uniqueness of email
 export class User extends SoftDelete {
     @PrimaryGeneratedColumn('uuid')
+    @Index()
     id: string;
 
     @Column({ nullable: false, unique: true })

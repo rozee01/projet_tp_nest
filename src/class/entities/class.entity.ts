@@ -13,6 +13,7 @@ export class Class extends SoftDelete {
 
     @OneToMany(() => StudentClass, (studentClass) => studentClass.class)
     studentClasses: StudentClass[];
-    @ManyToOne(() => Teacher, (teacher) => teacher.classesTaught)
-    teacher: Teacher;
+
+    @ManyToOne(() => Teacher, (teacher) => teacher.classesTaught, { onDelete: 'SET NULL' })
+    teacher: Teacher; // Set to null if Teacher is deleted
 }

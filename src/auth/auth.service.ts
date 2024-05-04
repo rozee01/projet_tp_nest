@@ -84,14 +84,14 @@ export class AuthService {
         }
         return { valid: true, err: null };
     }
-    async CreateUser(signUp: SignUpDTO, role: RoleEnum): Promise<{ valid: boolean; err: Error | null }> {
+    async CreateUser(signUp: SignUpDTO, role: RoleEnum): Promise<{ valid: boolean; err: Error | null; user: User }> {
         try {
             const { password, salt } = GetHashAndSalt(signUp.password);
             const user = await this.usersService.create({ ...signUp, password, salt, role });
             if (!user) throw new Error("Couldn't Create User");
+            return { valid: true, err: null, user };
         } catch (err) {
-            return { valid: false, err: err as Error };
+            return { valid: false, err: err as Error, user: null };
         }
-        return { valid: true, err: null };
     }
 }
