@@ -21,7 +21,6 @@ export class AuthService {
         if (!user) return null;
 
         const isEqual = CompareHashAndPass(password, user.password, user.salt);
-
         if (!isEqual) return null;
 
         const jwtPayload = new JwtPayloadDto(user);
@@ -29,7 +28,8 @@ export class AuthService {
     }
 
     async checkUser(id: string): Promise<User | null> {
-        return await this.usersService.findOne(id);
+        const user = await this.usersService.findOne(id);
+        return user;
     }
     async checkValid(signUp: SignUpDTO): Promise<{ valid: boolean; err: HttpException | null }> {
         //  prevents spammers from signing up using disposable email
@@ -84,14 +84,14 @@ export class AuthService {
         }
         return { valid: true, err: null };
     }
-    async CreateUser(signUp: SignUpDTO, role: RoleEnum): Promise<{ valid: boolean; err: Error | null }> {
+    async CreateUser(signUp: SignUpDTO, role: RoleEnum): Promise<{ valid: boolean; err: Error | null; user: User }> {
         try {
             const { password, salt } = GetHashAndSalt(signUp.password);
             const user = await this.usersService.create({ ...signUp, password, salt, role });
             if (!user) throw new Error("Couldn't Create User");
+            return { valid: true, err: null, user };
         } catch (err) {
-            return { valid: false, err: err as Error };
+            return { valid: false, err: err as Error, user: null };
         }
-        return { valid: true, err: null };
     }
 }

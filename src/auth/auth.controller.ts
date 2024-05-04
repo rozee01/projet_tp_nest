@@ -28,5 +28,6 @@ export class AuthController {
             if (!result.err) throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST);
             throw result.err;
         }
+        return result.valid;
     }
 }

@@ -14,11 +14,11 @@ export class StudentClassService {
 
     async create(createStudentClassDto: CreateStudentClassDto): Promise<StudentClass> {
         const newStudentClass = this.studentClassRepository.create(createStudentClassDto);
-        return await this.studentClassRepository.save(newStudentClass);
+        return this.studentClassRepository.save(newStudentClass);
     }
 
     async findAll(): Promise<StudentClass[]> {
-        return await this.studentClassRepository.find();
+        return this.studentClassRepository.find();
     }
 
     async findOne(studentId: string, classId: string): Promise<StudentClass> {
@@ -26,7 +26,7 @@ export class StudentClassService {
             where: { student_id: studentId, class_id: classId },
         });
         if (!studentClass) {
-            throw new NotFoundException(`StudentClass with studentId ${studentId} and classId ${classId} not found.`);
+            throw new NotFoundException(`StudentClass with Student ID ${studentId} and Class ID ${classId} not found.`);
         }
         return studentClass;
     }
@@ -37,12 +37,22 @@ export class StudentClassService {
         updateStudentClassDto: UpdateStudentClassDto,
     ): Promise<StudentClass> {
         const existingStudentClass = await this.findOne(studentId, classId);
+        if (!existingStudentClass) {
+            throw new NotFoundException(
+                `Cannot update: StudentClass with Student ID ${studentId} and Class ID ${classId} not found.`,
+            );
+        }
         const updatedStudentClass = Object.assign(existingStudentClass, updateStudentClassDto);
-        return await this.studentClassRepository.save(updatedStudentClass);
+        return this.studentClassRepository.save(updatedStudentClass);
     }
 
     async remove(studentId: string, classId: string): Promise<void> {
         const studentClass = await this.findOne(studentId, classId);
+        if (!studentClass) {
+            throw new NotFoundException(
+                `Cannot remove: StudentClass with Student ID ${studentId} and Class ID ${classId} not found.`,
+            );
+        }
         await this.studentClassRepository.remove(studentClass);
     }
 }

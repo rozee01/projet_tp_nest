@@ -7,21 +7,19 @@ import {
     Param,
     Delete,
     UseGuards,
-    HttpStatus,
     HttpException,
+    HttpStatus,
     UnauthorizedException,
 } from '@nestjs/common';
-import { TeacherService } from './teacher.service'; // Import the service
-import { CreateTeacherDto } from './dtos/create-teacher.dto'; // Import DTOs as needed
-import { UpdateTeacherDto } from './dtos/update-teacher.dto';
+import { TeacherService } from './teacher.service';
 import { SignUpDTO } from 'src/auth/dto/signup.dto';
 import { AuthService } from 'src/auth/auth.service';
 import { RoleEnum } from 'src/common/enum/roles.enum';
 import { JWTGuard } from 'src/auth/guard/jwt.guard';
 import { UserDecorator } from 'src/common/decorators/user.decorator';
 import { JwtPayloadDto } from 'src/auth/dto/jwt-payload.dto';
-
-@Controller('teacher')
+import { Teacher } from './entities/teacher.entity';
+@Controller('teachers')
 export class TeacherController {
     constructor(
         private readonly teachersService: TeacherService,
@@ -41,9 +39,7 @@ export class TeacherController {
             if (!result.err) throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST);
             throw result.err;
         }
-        const res = await this.teachersService.create({ ...signUp, role: RoleEnum.TEACHER });
-        if (!res) throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST);
-        return res;
+        return this.teachersService.create({ user: result.user });
     }
     @Get()
     @UseGuards(JWTGuard)
@@ -59,19 +55,27 @@ export class TeacherController {
 
     @Patch(':id')
     @UseGuards(JWTGuard)
-    update(@UserDecorator() user: JwtPayloadDto, @Param('id') id: string, @Body() updateTeacherDto: UpdateTeacherDto) {
-        if (user.role != RoleEnum.ADMIN && user.id != id) throw new UnauthorizedException();
-        return this.teachersService.update(id, updateTeacherDto);
+    async update(
+        @UserDecorator() user: JwtPayloadDto,
+        @Param('id') id: string,
+        @Body() updateData: Partial<Teacher>,
+    ): Promise<Teacher> {
+        if (user.role !== RoleEnum.ADMIN && user.id !== id) {
+            throw new UnauthorizedException('You do not have permission to perform this operation.');
+        }
+        return this.teachersService.update(id, updateData);
     }
 
     @Delete(':id')
     @UseGuards(JWTGuard)
     remove(@UserDecorator() user: JwtPayloadDto, @Param('id') id: string) {
-        if (user.role != RoleEnum.ADMIN) throw new UnauthorizedException();
+        if (user.role != RoleEnum.ADMIN && user.id !== id)
+            throw new UnauthorizedException('Only admins can delete a teacher. Or the teacher can delete himself');
         return this.teachersService.remove(id);
     }
+
     @Post('link-class')
-    async linkClassToTeacher(@Body() body: { teacherId: string; classId: string }) {
-        return this.teachersService.linkClassToTeacher(body.teacherId, body.classId);
+    async linkClassToTeacher(@Body() link: { teacherId: string; classId: string }): Promise<Teacher> {
+        return this.teachersService.linkClassToTeacher(link.teacherId, link.classId);
     }
 }

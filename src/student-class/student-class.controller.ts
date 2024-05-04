@@ -1,4 +1,16 @@
-import { Controller, Get, Post, Patch, Param, Delete, Body, UseGuards, UnauthorizedException } from '@nestjs/common';
+import {
+    Controller,
+    Get,
+    Post,
+    Patch,
+    Param,
+    Delete,
+    Body,
+    UseGuards,
+    UnauthorizedException,
+    HttpException,
+    HttpStatus,
+} from '@nestjs/common';
 import { StudentClassService } from './student-class.service';
 import { CreateStudentClassDto } from './dto/create-student-class.dto';
 import { UpdateStudentClassDto } from './dto/update-student-class.dto';
@@ -7,7 +19,7 @@ import { UserDecorator } from 'src/common/decorators/user.decorator';
 import { JwtPayloadDto } from 'src/auth/dto/jwt-payload.dto';
 import { RoleEnum } from 'src/common/enum/roles.enum';
 
-@Controller('student-class')
+@Controller('student-classes')
 export class StudentClassController {
     constructor(private readonly studentClassService: StudentClassService) {}
 
@@ -37,7 +49,9 @@ export class StudentClassController {
         @Param('classId') classId: string,
         @Body() updateStudentClassDto: UpdateStudentClassDto,
     ) {
-        if (user.role == RoleEnum.STUDENT) throw new UnauthorizedException();
+        if (user.role !== RoleEnum.ADMIN) {
+            throw new UnauthorizedException('Insufficient permission to update student-class relationships.');
+        }
         return this.studentClassService.update(studentId, classId, updateStudentClassDto);
     }
 
@@ -48,7 +62,9 @@ export class StudentClassController {
         @Param('studentId') studentId: string,
         @Param('classId') classId: string,
     ) {
-        if (user.role == RoleEnum.STUDENT) throw new UnauthorizedException();
+        if (user.role !== RoleEnum.ADMIN) {
+            throw new UnauthorizedException('Insufficient permission to delete student-class relationships.');
+        }
         return this.studentClassService.remove(studentId, classId);
     }
 }
