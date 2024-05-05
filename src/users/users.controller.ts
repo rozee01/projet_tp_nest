@@ -22,4 +22,6 @@ export class UsersController {
         if (user.id == id || user.role === RoleEnum.ADMIN) return await this.userService.findOne(id);
         throw new UnauthorizedException();
     }
+    
+    
 }

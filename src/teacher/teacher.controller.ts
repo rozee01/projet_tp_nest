@@ -41,7 +41,7 @@ export class TeacherController {
         }
         return this.teachersService.create({ user: result.user });
     }
-    @Get()
+    @Get('')
     @UseGuards(JWTGuard)
     findAll() {
         return this.teachersService.findAll();
