@@ -5,6 +5,7 @@ import { Class } from '../class/entities/class.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { RoleEnum } from 'src/common/enum/roles.enum';
+import { User } from 'src/users/entities/user.entity';
 
 @Injectable()
 export class TeacherService extends CrudService<Teacher> {
@@ -13,6 +14,8 @@ export class TeacherService extends CrudService<Teacher> {
         private readonly teacherRepository: Repository<Teacher>,
         @InjectRepository(Class)
         private readonly classRepository: Repository<Class>,
+        @InjectRepository(User)
+        private readonly UserRepository: Repository<User>,
     ) {
         super(teacherRepository);
     }
@@ -46,4 +49,5 @@ export class TeacherService extends CrudService<Teacher> {
         // Save the updated teacher entity
         return this.teacherRepository.save(teacher);
     }
+ 
 }
