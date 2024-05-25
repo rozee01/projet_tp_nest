@@ -13,7 +13,8 @@ export class PostsController {
 
     @Post()
     @UseGuards(JWTGuard)
-    create(@UserDecorator() user: JwtPayloadDto, @Body() createPostDto: CreatePostDto) {
+    create(@UserDecorator() user: JwtPayloadDto, @Body() createPostDto: CreatePostDto) 
+    {
         if (user.role == RoleEnum.STUDENT) throw new UnauthorizedException();
         return this.postsService.create(createPostDto);
     }
@@ -37,7 +38,8 @@ export class PostsController {
 
     @Delete(':id')
     @UseGuards(JWTGuard)
-    remove(@UserDecorator() user: JwtPayloadDto, @Param('id') id: string) {
+    remove(@UserDecorator() user: JwtPayloadDto, @Param('id') id: string)
+     {
         if (user.role == RoleEnum.STUDENT) throw new UnauthorizedException();
         return this.postsService.remove(id);
     }

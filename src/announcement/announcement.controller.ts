@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, UnauthorizedException } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, UnauthorizedException, Sse } from '@nestjs/common';
 import { AnnouncementService } from './announcement.service';
 import { CreateAnnouncementDto } from './dto/create-announcement.dto';
 import { UpdateAnnouncementDto } from './dto/update-announcement.dto';
@@ -6,11 +6,23 @@ import { JWTGuard } from 'src/auth/guard/jwt.guard';
 import { UserDecorator } from 'src/common/decorators/user.decorator';
 import { JwtPayloadDto } from 'src/auth/dto/jwt-payload.dto';
 import { RoleEnum } from 'src/common/enum/roles.enum';
-
+import { EventEmitter2 } from '@nestjs/event-emitter';
+import { Observable, fromEvent } from 'rxjs';
+import { map, filter } from 'rxjs/operators';
+import { eventType } from 'src/common/eventType';
 @Controller('announcement')
 export class AnnouncementController {
-    constructor(private readonly announcementService: AnnouncementService) {}
-
+    constructor(private readonly announcementService: AnnouncementService,private eventEmitter: EventEmitter2) {}
+    
+    @Sse('sse')
+    sse() { 
+      return fromEvent(this.eventEmitter, 'persistence').pipe(
+               filter((payload: eventType) => {}),
+               map((payload: eventType) => {
+              return new MessageEvent('persistence event', { data: payload });
+            }),
+          );
+        }
     @Post()
     @UseGuards(JWTGuard)
     create(@UserDecorator() user: JwtPayloadDto, @Body() createAnnouncementDto: CreateAnnouncementDto) {
