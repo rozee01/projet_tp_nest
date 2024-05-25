@@ -1,4 +1,22 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, UnauthorizedException } from '@nestjs/common';
+import {
+    Controller,
+    Get,
+    Post,
+    Body,
+    Patch,
+    Param,
+    Delete,
+    UseGuards,
+    UnauthorizedException,
+    Res,
+    UseInterceptors,
+    UploadedFile,
+    Req,
+    StreamableFile,
+    NotFoundException,
+    UploadedFiles,
+} from '@nestjs/common';
+import { createReadStream, existsSync } from 'fs';
 import { PostsService } from './posts.service';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
@@ -6,16 +24,31 @@ import { JWTGuard } from 'src/auth/guard/jwt.guard';
 import { UserDecorator } from 'src/common/decorators/user.decorator';
 import { JwtPayloadDto } from 'src/auth/dto/jwt-payload.dto';
 import { RoleEnum } from 'src/common/enum/roles.enum';
+import { join } from 'path';
+import { Response } from '@nestjs/common';
+import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
+import { FileUploadService } from 'src/common/service/file-upload.service';
+import { DeepPartial } from 'typeorm';
 
 @Controller('posts')
 export class PostsController {
-    constructor(private readonly postsService: PostsService) {}
+    constructor(private readonly postsService: PostsService,
+        private readonly filesService: FileUploadService
+    ) {}
 
     @Post()
-    @UseGuards(JWTGuard)
-    create(@UserDecorator() user: JwtPayloadDto, @Body() createPostDto: CreatePostDto) {
-        if (user.role == RoleEnum.STUDENT) throw new UnauthorizedException();
-        return this.postsService.create(createPostDto);
+    //@UseGuards(JWTGuard)
+    @UseInterceptors(FilesInterceptor('files'))
+    create(@UploadedFiles() files: Express.Multer.File[], @Body() createPostDto: CreatePostDto) {
+        //if (user.role == RoleEnum.STUDENT) throw new UnauthorizedException();
+        // Process files
+        const filePaths = files.map(file => this.filesService.saveFile(file));
+        const post = {
+            title: createPostDto.title,
+            content: createPostDto.content,
+            files: filePaths.join(','),
+        };
+        return this.postsService.create(post);
     }
 
     @Get()
@@ -29,10 +62,32 @@ export class PostsController {
     }
 
     @Patch(':id')
-    @UseGuards(JWTGuard)
-    update(@UserDecorator() user: JwtPayloadDto, @Param('id') id: string, @Body() updatePostDto: UpdatePostDto) {
-        if (user.role == RoleEnum.STUDENT) throw new UnauthorizedException();
-        return this.postsService.update(id, updatePostDto);
+    //@UseGuards(JWTGuard)
+    async update(
+     @UploadedFiles() files: Express.Multer.File[],
+     //@UserDecorator() user: JwtPayloadDto,
+     @Param('id') id: string,
+     @Body() updatePostDto: UpdatePostDto) {
+        //if (user.role == RoleEnum.STUDENT) throw new UnauthorizedException();
+        const existingPost =await this.postsService.findOne(id);
+        if (!existingPost) {
+            throw new NotFoundException(`Post with ID ${id} not found`);
+        }
+
+        // Process new files if any
+        let fileNames = existingPost.files ? existingPost.files.split(',') : [];
+        if (files && files.length > 0) {
+            const newFilePaths = files.map(file => this.filesService.saveFile(file));
+            fileNames = [...fileNames, ...newFilePaths];
+        }
+
+        const postUpdate = {
+            title: updatePostDto.title ?? existingPost.title,
+            content: updatePostDto.content ?? existingPost.content,
+            files: fileNames.join(','),
+        };
+
+        return this.postsService.update(id, postUpdate);
     }
 
     @Delete(':id')
@@ -41,4 +96,23 @@ export class PostsController {
         if (user.role == RoleEnum.STUDENT) throw new UnauthorizedException();
         return this.postsService.remove(id);
     }
+    @Get('download/:filename')
+    downloadFile(@Param('filename') filename): StreamableFile {
+        const filePath = join(__dirname, '..', '..', 'uploads', filename);
+    if (!existsSync(filePath)) {
+        throw new NotFoundException(`File ${filename} not found`);
+    }
+    const file = createReadStream(filePath);
+    return new StreamableFile(file);
+    }
+    /*@Post('upload')
+    @UseInterceptors(FileInterceptor('files'))
+    uploadFiles(@UploadedFile() file: Express.Multer.File, @Req() request, @Body() createPostDto: CreatePostDto) {
+        const user = request.user;
+        if (user.role !== RoleEnum.TEACHER) {
+            throw new UnauthorizedException();
+        }
+        const filePath = this.filesService.saveFile(file);
+        return this.postsService.create(createPostDto);
+    }*/
 }

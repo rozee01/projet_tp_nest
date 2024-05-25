@@ -9,7 +9,8 @@ import {
     UseGuards,
     HttpException,
     HttpStatus,
-    UnauthorizedException,
+    UnauthorizedException, UseInterceptors,
+    UploadedFile
 } from '@nestjs/common';
 import { TeacherService } from './teacher.service';
 import { SignUpDTO } from 'src/auth/dto/signup.dto';
@@ -18,6 +19,7 @@ import { RoleEnum } from 'src/common/enum/roles.enum';
 import { JWTGuard } from 'src/auth/guard/jwt.guard';
 import { UserDecorator } from 'src/common/decorators/user.decorator';
 import { JwtPayloadDto } from 'src/auth/dto/jwt-payload.dto';
+import { FileInterceptor } from '@nestjs/platform-express';
 import { Teacher } from './entities/teacher.entity';
 @Controller('teachers')
 export class TeacherController {
@@ -77,5 +79,10 @@ export class TeacherController {
     @Post('link-class')
     async linkClassToTeacher(@Body() link: { teacherId: string; classId: string }): Promise<Teacher> {
         return this.teachersService.linkClassToTeacher(link.teacherId, link.classId);
+    }
+    @Post('upload')
+    @UseInterceptors(FileInterceptor('file'))
+    uploadFile(@UploadedFile() file: Express.Multer.File) {
+        console.log(file);
     }
 }
