@@ -37,10 +37,10 @@ export class PostsController {
     ) {}
 
     @Post()
-    //@UseGuards(JWTGuard)
+    @UseGuards(JWTGuard)
     @UseInterceptors(FilesInterceptor('files'))
-    create(@UploadedFiles() files: Express.Multer.File[], @Body() createPostDto: CreatePostDto) {
-        //if (user.role == RoleEnum.STUDENT) throw new UnauthorizedException();
+    create(@UserDecorator() user: JwtPayloadDto,@UploadedFiles() files: Express.Multer.File[], @Body() createPostDto: CreatePostDto) {
+        if (user.role == RoleEnum.STUDENT) throw new UnauthorizedException();
         // Process files
         const filePaths = files.map(file => this.filesService.saveFile(file));
         const post = {
@@ -62,13 +62,13 @@ export class PostsController {
     }
 
     @Patch(':id')
-    //@UseGuards(JWTGuard)
+    @UseGuards(JWTGuard)
     async update(
      @UploadedFiles() files: Express.Multer.File[],
-     //@UserDecorator() user: JwtPayloadDto,
+     @UserDecorator() user: JwtPayloadDto,
      @Param('id') id: string,
      @Body() updatePostDto: UpdatePostDto) {
-        //if (user.role == RoleEnum.STUDENT) throw new UnauthorizedException();
+        if (user.role == RoleEnum.STUDENT) throw new UnauthorizedException();
         const existingPost =await this.postsService.findOne(id);
         if (!existingPost) {
             throw new NotFoundException(`Post with ID ${id} not found`);
