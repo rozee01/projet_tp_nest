@@ -9,6 +9,9 @@ import { ClassService } from 'src/class/class.service';
 
 @Injectable()
 export class PostsService extends CrudService<Post> {
+    findAllByTeacher(teacherId: string) {
+        throw new Error('Method not implemented.');
+    }
     constructor(
         @InjectRepository(Post)
         private readonly postRepository: Repository<Post>,
@@ -36,12 +39,13 @@ export class PostsService extends CrudService<Post> {
           where: { id: studentId },
           relations: ['classes', 'classes.posts', 'classes.posts.author', 'classes.posts.className'],
         });
-    
+      
         if (!student) {
           throw new Error('Student not found');
         }
-    
+      
         const posts = student.classes.flatMap((classEntity) => classEntity.posts);
         return posts;
       }
+      
 }
