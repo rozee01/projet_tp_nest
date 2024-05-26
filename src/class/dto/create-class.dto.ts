@@ -9,9 +9,6 @@ export class CreateClassDto {
 
     @IsString()
     description: string;
-    
-    @IsUUID()
-    teacherId: string;
 
     @IsEnum(LevelEnum)
     level: LevelEnum;

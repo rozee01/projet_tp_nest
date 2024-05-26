@@ -143,6 +143,11 @@ if (files && files.length > 0) {
         });
         fileStream.pipe(res);
     }
+    @Get('teacher/:teacherId')
+    @UseGuards(JWTGuard)
+    async findAllByTeacher(@Param('teacherId') teacherId: string) {
+        return this.postsService.findAllByTeacher(teacherId);
+    }
     /*@Post('upload')
     @UseInterceptors(FileInterceptor('files'))
     uploadFiles(@UploadedFile() file: Express.Multer.File, @Req() request, @Body() createPostDto: CreatePostDto) {

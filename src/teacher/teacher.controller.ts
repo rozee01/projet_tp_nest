@@ -51,8 +51,10 @@ export class TeacherController {
     }
     @Post('createclass')
     @UseGuards(JWTGuard)
-    async LevelClassCreate(@Body() classDTO :CreateClassDto){
-        const newClass = await this.teachersService.createClassForLevel(classDTO);
+    async LevelClassCreate(
+        @Body() classDTO :CreateClassDto,
+        @UserDecorator() user: JwtPayloadDto){
+        const newClass = await this.teachersService.createClassForLevel(classDTO, user.id);
         return newClass;
     }
     @Get(':id')
