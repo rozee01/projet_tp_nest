@@ -45,13 +45,9 @@ import { TestiController } from './testi/testi.controller';
         CommonModule,
         StudentModule,
         TeacherModule,
-        TeacherModule,
         AnnouncementModule,
-        
         EmailServerModule,
-        
     ],
     controllers: [TestiController],
-}
-)
+})
 export class AppModule {}

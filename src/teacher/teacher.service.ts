@@ -27,10 +27,10 @@ export class TeacherService extends CrudService<Teacher> {
         super(teacherRepository);
     }
     
-    async createClassForLevel(createClassDto: CreateClassDto): Promise<Class> {
-        const teacher = await this.teacherRepository.findOne({ where: { id: createClassDto.teacherId }, relations: ['classesTaught'] });
+    async createClassForLevel(createClassDto: CreateClassDto, teacherId: string): Promise<Class> {
+        const teacher = await this.teacherRepository.findOne({ where: { id: teacherId }, relations: ['classesTaught'] });
         if (!teacher) {
-            throw new NotFoundException(`Teacher with ID ${createClassDto.teacherId} not found`);
+            throw new NotFoundException(`Teacher with ID ${teacherId} not found`);
         }
         
         const students = await this.studentRepository.find({ where: { level: createClassDto.level }, relations : ["user"], });
@@ -39,7 +39,7 @@ export class TeacherService extends CrudService<Teacher> {
             console.log("no students in taht level")
         }
 
-        const newClass = await this.classService.createClass(createClassDto);
+        const newClass = await this.classService.createClass(createClassDto, teacherId);
 
         for (const student of students) {
             await this.classService.enroll(newClass.id, student.id);
