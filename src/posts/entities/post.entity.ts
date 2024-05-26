@@ -10,8 +10,8 @@ export class Post extends SoftDelete {
     title: string;
     @Column()
     content: string;
-    @Column({ type: 'text', default: '' })
-    files: string;
+    @Column({ type: 'simple-array', default: '' })
+    files: string[];
     
 
     @ManyToOne(()=>Class,(className)=>className.posts)
