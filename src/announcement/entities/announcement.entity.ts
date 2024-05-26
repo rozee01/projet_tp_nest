@@ -6,9 +6,6 @@ export class Announcement extends SoftDelete {
     @PrimaryGeneratedColumn('uuid')
     id: string;
 
-    /*@Column()
-  class_id: string;*/ 
-
     @Column({ length: 255 })
     title: string;
 

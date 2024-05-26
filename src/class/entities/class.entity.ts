@@ -2,6 +2,7 @@ import { Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToOne } from 'ty
 import { StudentClass } from 'src/student-class/entities/studentclass.entity';
 import { Teacher } from 'src/teacher/entities/teacher.entity';
 import { SoftDelete } from 'src/common/database/softdelete.entity';
+import { Post } from 'src/posts/entities/post.entity';
 
 @Entity()
 export class Class extends SoftDelete {
@@ -10,6 +11,9 @@ export class Class extends SoftDelete {
 
     @Column({ nullable: false })
     class_name: string;
+    
+    @OneToMany(()=>Post,(post)=>post.className)
+    posts:Post[];
 
     @OneToMany(() => StudentClass, (studentClass) => studentClass.class)
     studentClasses: StudentClass[];

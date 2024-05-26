@@ -19,7 +19,7 @@ export class TeacherService extends CrudService<Teacher> {
     ) {
         super(teacherRepository);
     }
-
+    
     async create(teacherData: Partial<Teacher>): Promise<Teacher> {
         if (!teacherData.user || teacherData.user.role !== RoleEnum.TEACHER) {
             throw new NotFoundException('User must have the teacher role to be assigned as a teacher');

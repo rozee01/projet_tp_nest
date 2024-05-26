@@ -4,12 +4,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 
 import { AuthModule } from './auth/auth.module';
-import { FilesModule } from './files/files.module';
 import { ClassModule } from './class/class.module';
 import { UsersModule } from './users/users.module';
 import { PostsModule } from './posts/posts.module';
 import { CommonModule } from './common/common.module';
-import { SubjectModule } from './subject/subject.module';
 import { StudentModule } from './student/student.module';
 import { TeacherModule } from './teacher/teacher.module';
 import { AnnouncementModule } from './announcement/announcement.module';
@@ -39,15 +37,12 @@ import { entitiesList } from './common/entities/entities';
         }),
         AuthModule,
         UsersModule,
-        FilesModule,
         PostsModule,
-        FilesModule,
         ClassModule,
         CommonModule,
         StudentModule,
         TeacherModule,
         TeacherModule,
-        SubjectModule,
         AnnouncementModule,
         StudentClassModule,
     ],

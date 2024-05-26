@@ -10,21 +10,23 @@ import { EventEmitter2 } from '@nestjs/event-emitter';
 import { Observable, fromEvent } from 'rxjs';
 import { map, filter } from 'rxjs/operators';
 import { eventType } from 'src/common/eventType';
+
 @Controller('announcement')
+
 export class AnnouncementController {
     constructor(private readonly announcementService: AnnouncementService,private eventEmitter: EventEmitter2) {}
-    
+ 
     @Sse('sse')
-    sse() : Observable<MessageEvent> { 
-      return fromEvent(this.eventEmitter, 'persistence').pipe(
-        filter((payload: eventType) => { 
-                   return  payload.user.role === 'admin';
-               }),
-               map((payload: eventType) => {
-              return new MessageEvent('persistence event', { data: payload });
-            }),
-          );
-        }
+    sse(): Observable<MessageEvent> {
+        return fromEvent(this.eventEmitter, 'persistence').pipe(
+          filter((payload): payload is eventType => payload.hasOwnProperty('post') && payload.hasOwnProperty('user') && payload.hasOwnProperty('action') && payload.hasOwnProperty('class')),
+          map((payload: eventType) => {
+            console.log('payload', payload);
+          return new MessageEvent('persistence event', { data: payload });
+          }),
+        );
+      }
+    
     @Post()
     @UseGuards(JWTGuard)
     create(@UserDecorator() user: JwtPayloadDto, @Body() createAnnouncementDto: CreateAnnouncementDto) {

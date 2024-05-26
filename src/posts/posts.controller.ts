@@ -25,30 +25,61 @@ import { UserDecorator } from 'src/common/decorators/user.decorator';
 import { JwtPayloadDto } from 'src/auth/dto/jwt-payload.dto';
 import { RoleEnum } from 'src/common/enum/roles.enum';
 import { join } from 'path';
-import { Response } from '@nestjs/common';
+import { Response } from 'express';
 import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import { FileUploadService } from 'src/common/service/file-upload.service';
-import { DeepPartial } from 'typeorm';
+import { DeepPartial, Repository } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Teacher } from 'src/teacher/entities/teacher.entity';
+import { EventEmitter2 } from '@nestjs/event-emitter';
+import { ActionEnum } from 'src/common/enum/action.enum';
+import { Class } from 'src/class/entities/class.entity';
 
 @Controller('posts')
 export class PostsController {
-    constructor(private readonly postsService: PostsService,
-        private readonly filesService: FileUploadService
+    constructor(
+        private readonly postsService: PostsService,
+        @InjectRepository(Teacher)
+        private readonly teacherRepository: Repository<Teacher>,
+        @InjectRepository(Class)
+        private readonly classRepository: Repository<Class>,
+        private readonly filesService: FileUploadService,
+        private eventEmitter: EventEmitter2,
     ) {}
 
     @Post()
     @UseGuards(JWTGuard)
     @UseInterceptors(FilesInterceptor('files'))
-    create(@UserDecorator() user: JwtPayloadDto,@UploadedFiles() files: Express.Multer.File[], @Body() createPostDto: CreatePostDto) {
+    async create(
+        @UserDecorator() user: JwtPayloadDto,
+        @UploadedFiles() files: Express.Multer.File[],
+        @Body() createPostDto: CreatePostDto,
+    ) {
         if (user.role == RoleEnum.STUDENT) throw new UnauthorizedException();
         // Process files
-        const filePaths = files.map(file => this.filesService.saveFile(file));
+        const filePaths = files.map((file) => this.filesService.saveFile(file));
         const post = {
             title: createPostDto.title,
             content: createPostDto.content,
             files: filePaths.join(','),
         };
-        return this.postsService.create(post);
+        var p = await this.postsService.create(post);
+        p.author = await this.teacherRepository.findOne({
+            where: { id: user.id },
+        });
+        p.className = await this.classRepository.findOne({
+            where: {
+                id: createPostDto.className,
+            },
+        });
+        // Set the authorId to the current user's ID
+        this.eventEmitter.emit('persistence', {
+            post: post,
+            user: p.author,
+            class: p.className,
+            action: ActionEnum.CREATE,
+        });
+        return p;
     }
 
     @Get()
@@ -64,12 +95,13 @@ export class PostsController {
     @Patch(':id')
     @UseGuards(JWTGuard)
     async update(
-     @UploadedFiles() files: Express.Multer.File[],
-     @UserDecorator() user: JwtPayloadDto,
-     @Param('id') id: string,
-     @Body() updatePostDto: UpdatePostDto) {
+        @UploadedFiles() files: Express.Multer.File[],
+        @UserDecorator() user: JwtPayloadDto,
+        @Param('id') id: string,
+        @Body() updatePostDto: UpdatePostDto,
+    ) {
         if (user.role == RoleEnum.STUDENT) throw new UnauthorizedException();
-        const existingPost =await this.postsService.findOne(id);
+        const existingPost = await this.postsService.findOne(id);
         if (!existingPost) {
             throw new NotFoundException(`Post with ID ${id} not found`);
         }
@@ -77,7 +109,7 @@ export class PostsController {
         // Process new files if any
         let fileNames = existingPost.files ? existingPost.files.split(',') : [];
         if (files && files.length > 0) {
-            const newFilePaths = files.map(file => this.filesService.saveFile(file));
+            const newFilePaths = files.map((file) => this.filesService.saveFile(file));
             fileNames = [...fileNames, ...newFilePaths];
         }
 
@@ -92,19 +124,21 @@ export class PostsController {
 
     @Delete(':id')
     @UseGuards(JWTGuard)
-    remove(@UserDecorator() user: JwtPayloadDto, @Param('id') id: string)
-     {
+    remove(@UserDecorator() user: JwtPayloadDto, @Param('id') id: string) {
         if (user.role == RoleEnum.STUDENT) throw new UnauthorizedException();
         return this.postsService.remove(id);
     }
     @Get('download/:filename')
-    downloadFile(@Param('filename') filename): StreamableFile {
-        const filePath = join(__dirname, '..', '..', 'uploads', filename);
-    if (!existsSync(filePath)) {
-        throw new NotFoundException(`File ${filename} not found`);
-    }
-    const file = createReadStream(filePath);
-    return new StreamableFile(file);
+    downloadFile(@Param('filename') filename: string, @Res() res: Response) {
+        const filePath = this.filesService.getFilePath(filename);
+        if (!existsSync(filePath)) {
+            throw new NotFoundException(`File ${filename} not found`);
+        }
+        const fileStream = createReadStream(filePath);
+        res.set({
+            'Content-Disposition': `attachment; filename="${filename}"`,
+        });
+        fileStream.pipe(res);
     }
     /*@Post('upload')
     @UseInterceptors(FileInterceptor('files'))
