@@ -9,6 +9,7 @@ import { Teacher } from 'src/teacher/entities/teacher.entity';
 import { TeacherService } from 'src/teacher/teacher.service';
 import { Student } from 'src/student/entities/student.entity';
 import { StudentService } from '../student/student.service';
+import { UUID } from 'crypto';
 
 @Injectable()
 export class ClassService extends CrudService<Class> {
@@ -23,14 +24,16 @@ export class ClassService extends CrudService<Class> {
         super(classRepository);
     }
 
-    async createClass(createClassDto: CreateClassDto): Promise<Class> {
-        const teacher = await this.teacherService.findOne(createClassDto.teacherId);
+    async createClass(createClassDto: CreateClassDto,teacherId: string): Promise<Class> {
+        const teacher = await this.teacherService.findOne(teacherId);
 
         if (!teacher) {
             throw new NotFoundException(`Teacher not found`);
         }
+        console.log('teacher:', teacher);
 
-        const classEntity = this.classRepository.create({ class_name: createClassDto.class_name, teacher });
+        const classEntity = this.classRepository.create(createClassDto);
+        void this.teacherService.linkClassToTeacher(teacher.id, classEntity.id);
         return this.classRepository.save(classEntity);
     }
 

@@ -19,14 +19,14 @@ export class PostsService extends CrudService<Post> {
         super(postRepository);
     }
     async create(entity: DeepPartial<Post>): Promise<Post> {
-        //const classDuPost = await this.classService.findOne(entity.className.id);
-        /*if (!classDuPost) {
+        const classDuPost = await this.classService.findOne(entity.className.id);
+        if (!classDuPost) {
             throw new NotFoundException('class not found');
         }
         const students = classDuPost.students;
         for (const student of students) {
             await this.emailServerService.SendPostMail(student.user.email, student.user.firstName);
-        }*/
+        }
         const post = super.create(entity);
 
         return post;

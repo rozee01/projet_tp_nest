@@ -11,8 +11,8 @@ import helmet from 'helmet';
 async function bootstrap() {
     const app: NestExpressApplication = await NestFactory.create(AppModule);
     const config: ConfigService = app.get(ConfigService);
-    const port: number = config.get<number>('SERVER_PORT') ?? 3001;
-
+    //const port: number = config.get<number>('SERVER_PORT') ?? 3001;
+    const port: number = 3001;
     const configuration = new DocumentBuilder()
         .setTitle('Google Classroom Clone')
         .setDescription('The Google Classroom Clone API description')
