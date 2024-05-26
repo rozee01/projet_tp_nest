@@ -17,8 +17,8 @@ import { Student } from 'src/student/entities/student.entity';
     imports: [
         TypeOrmModule.forFeature([Teacher, User, Student]),
         forwardRef(() => ClassModule), // Use forwardRef here
-        UsersModule, 
-        EmailServerModule
+        UsersModule,
+        EmailServerModule,
     ],
     providers: [TeacherService, AuthService, UsersService, JwtService],
     controllers: [TeacherController],

@@ -9,9 +9,7 @@ export class AnnouncementService extends CrudService<Announcement> {
     constructor(
         @InjectRepository(Announcement)
         private readonly announcementRepository: Repository<Announcement>,
-    ) 
-    {
+    ) {
         super(announcementRepository);
     }
-    
 }

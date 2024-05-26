@@ -18,7 +18,7 @@ import { Class } from 'src/class/entities/class.entity';
         forwardRef(() => ClassModule), 
         EmailServerModule, 
         forwardRef(() => TeacherModule),
-        forwardRef(() => StudentModule)
+        forwardRef(() => StudentModule),
     ],
     controllers: [PostsController],
     providers: [PostsService, FileUploadService],

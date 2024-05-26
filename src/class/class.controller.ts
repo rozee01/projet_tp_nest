@@ -14,7 +14,8 @@ export class ClassController {
     @UseGuards(JWTGuard)
     create(@UserDecorator() user: JwtPayloadDto, @Body() createClassDto: CreateClassDto) {
         if (user.role == RoleEnum.TEACHER || user.role == RoleEnum.ADMIN) {
-        return this.classService.createClass(createClassDto, user.id);}
+            return this.classService.createClass(createClassDto, user.id);
+        }
         throw new UnauthorizedException();
     }
     @Get()

@@ -41,10 +41,10 @@ import { ClassService } from 'src/class/class.service';
 export class PostsController {
     constructor(
         private readonly postsService: PostsService,
-        private readonly teacherService:TeacherService,
+        private readonly teacherService: TeacherService,
         private readonly classService: ClassService,
         private readonly filesService: FileUploadService,
-       // private eventEmitter: EventEmitter2,
+        // private eventEmitter: EventEmitter2,
     ) {}
 
     @Post()
@@ -58,19 +58,19 @@ export class PostsController {
         if (user.role == RoleEnum.STUDENT) throw new UnauthorizedException();
         let post;
 
-if (files && files.length > 0) {
-    const filePaths = files.map((file) => this.filesService.saveFile(file));
-    post = {
-        ...createPostDto,
-        files: filePaths.join(','),
-        className: await this.classService.findByName(createPostDto.className)
-    };
-} else {
-    post = {
-        ...createPostDto,
-        className: await this.classService.findByName(createPostDto.className)
-    };
-}
+        if (files && files.length > 0) {
+            const filePaths = files.map((file) => this.filesService.saveFile(file));
+            post = {
+                ...createPostDto,
+                files: filePaths.join(','),
+                className: await this.classService.findByName(createPostDto.className),
+            };
+        } else {
+            post = {
+                ...createPostDto,
+                className: await this.classService.findByName(createPostDto.className),
+            };
+        }
 
         var p = await this.postsService.create(post);
         p.author = await this.teacherService.findOne(user.id);
@@ -93,7 +93,7 @@ if (files && files.length > 0) {
     findOne(@Param('id') id: string) {
         return this.postsService.findOne(id);
     }
-/*
+    /*
     @Patch(':id')
     @UseGuards(JWTGuard)
     async update(

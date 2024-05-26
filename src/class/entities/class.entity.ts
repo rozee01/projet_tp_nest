@@ -5,7 +5,6 @@ import { SoftDelete } from 'src/common/database/softdelete.entity';
 import { Student } from 'src/student/entities/student.entity';
 import { Post } from 'src/posts/entities/post.entity';
 
-
 @Entity()
 export class Class extends SoftDelete {
     @PrimaryGeneratedColumn('uuid')
@@ -14,24 +13,23 @@ export class Class extends SoftDelete {
     @Column({ nullable: false })
     class_name: string;
 
-    @Column({nullable: true})
-    description : string ;
+    @Column({ nullable: true })
+    description: string;
 
     @OneToMany(() => Post, (post) => post.className)
     posts: Post[];
 
-    @ManyToMany(() => Student, (student) => student.classes, {onDelete: 'NO ACTION', onUpdate: 'NO ACTION'})
-    @JoinTable(
-        {
-        name:'student_class',
+    @ManyToMany(() => Student, (student) => student.classes, { onDelete: 'NO ACTION', onUpdate: 'NO ACTION' })
+    @JoinTable({
+        name: 'student_class',
         joinColumn: {
             name: 'student_id',
-            referencedColumnName: 'id'
-        },
-        inverseJoinColumn:{
-            name : 'class_id', 
             referencedColumnName: 'id',
-        }
+        },
+        inverseJoinColumn: {
+            name: 'class_id',
+            referencedColumnName: 'id',
+        },
     })
     students: Student[];
 

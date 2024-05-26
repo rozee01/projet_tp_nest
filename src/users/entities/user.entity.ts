@@ -6,10 +6,10 @@ import { Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm';
 @Index(['email'], { unique: true }) // Ensures quick look-up and uniqueness of email
 export class User extends SoftDelete {
     @PrimaryGeneratedColumn('uuid')
-    @Index()
     id: string;
 
     @Column({ nullable: false, unique: true })
+    @Index()
     email: string;
 
     @Column({ nullable: false })
