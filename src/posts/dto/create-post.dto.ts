@@ -1,4 +1,4 @@
-import { IsArray, IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { IsArray, IsNotEmpty, IsOptional, IsString, IsUUID } from 'class-validator';
 
 export class CreatePostDto {
     @IsNotEmpty()
@@ -9,9 +9,9 @@ export class CreatePostDto {
     content: string;
 
     @IsNotEmpty()
-    @IsString()
+    @IsUUID()
     classId: string
-    
+
     // @IsArray()
     // @IsOptional()
     // files: string[];
