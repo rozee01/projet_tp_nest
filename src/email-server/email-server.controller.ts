@@ -7,6 +7,6 @@ export class EmailServerController {
 
   @Post('send-confirmation')
   async sendConfirmation(@Body() body: { email: string, username: string, className: string, token: string }) {
-    await this.emailServerService.SendPostMail(body.email, body.username, body.className);
+    await this.emailServerService.SendClassMail(body.email, body.username, body.className);
   }
 }
