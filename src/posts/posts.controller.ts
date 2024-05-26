@@ -25,7 +25,7 @@ import { UserDecorator } from 'src/common/decorators/user.decorator';
 import { JwtPayloadDto } from 'src/auth/dto/jwt-payload.dto';
 import { RoleEnum } from 'src/common/enum/roles.enum';
 import { join } from 'path';
-import { Response } from '@nestjs/common';
+import { Response } from 'express';
 import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import { FileUploadService } from 'src/common/service/file-upload.service';
 import { DeepPartial } from 'typeorm';
@@ -97,13 +97,16 @@ export class PostsController {
         return this.postsService.remove(id);
     }
     @Get('download/:filename')
-    downloadFile(@Param('filename') filename): StreamableFile {
-        const filePath = join(__dirname, '..', '..', 'uploads', filename);
-    if (!existsSync(filePath)) {
-        throw new NotFoundException(`File ${filename} not found`);
-    }
-    const file = createReadStream(filePath);
-    return new StreamableFile(file);
+    downloadFile(@Param('filename') filename: string, @Res() res: Response) {
+        const filePath = this.filesService.getFilePath(filename);
+        if (!existsSync(filePath)) {
+            throw new NotFoundException(`File ${filename} not found`);
+        }
+        const fileStream = createReadStream(filePath);
+        res.set({
+            'Content-Disposition': `attachment; filename="${filename}"`,
+        });
+        fileStream.pipe(res);
     }
     /*@Post('upload')
     @UseInterceptors(FileInterceptor('files'))
