@@ -35,10 +35,10 @@ export class TeacherService extends CrudService<Teacher> {
 
         const students = await this.studentRepository.find({ where: { level: createClassDto.level }, relations : ["user"], });
         if (students.length === 0) {
-            throw new NotFoundException(`No students found with level ${createClassDto.level}`);
+            console.log("no students in taht level")
         }
 
-        const newClass = await this.classService.create(createClassDto);
+        const newClass = await this.classService.createClass(createClassDto);
 
         for (const student of students) {
             await this.classService.enroll(newClass.id, student.id);
@@ -46,6 +46,9 @@ export class TeacherService extends CrudService<Teacher> {
         }
 
         return newClass;
+    }
+    findOne(Id: string): Promise<Teacher> {
+        return this.teacherRepository.findOne({where : {id: Id}, relations : ["classesTaught"]})
     }
 
     async create(teacherData: Partial<Teacher>): Promise<Teacher> {
