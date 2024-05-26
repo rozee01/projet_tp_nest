@@ -43,5 +43,4 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
   providers: [EmailServerService],
   exports: [EmailServerService], 
 })
-// eslint-disable-next-line @typescript-eslint/no-extraneous-class
 export class EmailServerModule {}

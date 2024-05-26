@@ -31,4 +31,17 @@ export class PostsService extends CrudService<Post> {
 
         return post;
     }
+    async findPostsByStudentId(studentId: string): Promise<Post[]> {
+        const student = await this.studentService.findOne({
+          where: { id: studentId },
+          relations: ['classes', 'classes.posts', 'classes.posts.author', 'classes.posts.className'],
+        });
+    
+        if (!student) {
+          throw new Error('Student not found');
+        }
+    
+        const posts = student.classes.flatMap((classEntity) => classEntity.posts);
+        return posts;
+      }
 }
