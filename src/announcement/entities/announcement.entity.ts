@@ -6,14 +6,13 @@ export class Announcement extends SoftDelete {
     @PrimaryGeneratedColumn('uuid')
     id: string;
 
-    /*@Column()
-  class_id: string;*/
-
     @Column({ length: 255 })
     title: string;
 
     @Column('text')
     content: string;
+    @Column()
+    isSeen: boolean;
 
     /*@ManyToOne(() => Class, { eager: true }) // Assuming a Many-to-One relationship with the Class entity
   @JoinColumn({ name: 'class_id' })
