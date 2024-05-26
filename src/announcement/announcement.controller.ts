@@ -15,9 +15,11 @@ export class AnnouncementController {
     constructor(private readonly announcementService: AnnouncementService,private eventEmitter: EventEmitter2) {}
     
     @Sse('sse')
-    sse() { 
+    sse() : Observable<MessageEvent> { 
       return fromEvent(this.eventEmitter, 'persistence').pipe(
-               filter((payload: eventType) => {}),
+        filter((payload: eventType) => { 
+                   return  payload.user.role === 'admin';
+               }),
                map((payload: eventType) => {
               return new MessageEvent('persistence event', { data: payload });
             }),

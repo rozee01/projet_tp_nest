@@ -1,5 +1,5 @@
 import { Teacher } from 'src/teacher/entities/teacher.entity';
-import { ActionEnum } from './action.enum';
+import { ActionEnum } from './enum/action.enum';
 import { Post } from 'src/posts/entities/post.entity';
 import { Student } from 'src/student/entities/student.entity';
 

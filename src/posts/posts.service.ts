@@ -2,9 +2,11 @@ import { Injectable } from '@nestjs/common';
 import { CrudService } from 'src/common/service/crud.service';
 import { Post } from './entities/post.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { EventEmitter2 } from '@nestjs/event-emitter';
+
+import { DeepPartial, Repository } from 'typeorm';
 import { CreatePostDto } from './dto/create-post.dto';
+import { EventEmitter2 } from '@nestjs/event-emitter';
+import { ActionEnum } from 'src/common/enum/action.enum';
 
 @Injectable()
 export class PostsService extends CrudService<Post> {
@@ -15,8 +17,20 @@ export class PostsService extends CrudService<Post> {
     ) {
         super(postRepository);
     }
-    create(post: CreatePostDto) {
-        this.eventEmitter.emit('persistence', post);
-        return super.create(post);
+    async create(post: CreatePostDto) {
+        var p=await this postRepository.save(post);
+             this.eventEmitter.emit('persistence', 
+            {
+                post: post,
+                user: p.author,
+                action:ActionEnum.CREATE
+            }
+        );
+        return p;
+        
+    }
+    update(id: string, updateDto: DeepPartial<Post>): Promise<Post> {
+        this.eventEmitter.emit('persistence', updateDto);
+        return super.update(id, updateDto);
     }
 }
