@@ -9,6 +9,9 @@ import { ClassService } from 'src/class/class.service';
 
 @Injectable()
 export class PostsService extends CrudService<Post> {
+    findAllByTeacher(teacherId: string) {
+        throw new Error('Method not implemented.');
+    }
     constructor(
         @InjectRepository(Post)
         private readonly postRepository: Repository<Post>,
