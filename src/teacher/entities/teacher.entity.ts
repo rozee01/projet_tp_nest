@@ -11,7 +11,7 @@ export class Teacher extends SoftDelete {
     id: string;
 
     @OneToOne(() => User)
-    @JoinColumn({ name: 'id' })
+    @JoinColumn({ name: 'id',foreignKeyConstraintName:'teacher_user_id' })
     user: User;
 
     @OneToMany(() => Class, (classEntity) => classEntity.teacher)

@@ -8,10 +8,8 @@ export class Post extends SoftDelete {
     title: string;
     @Column()
     content: string;
-    // @OneToMany(() => File, (files) => files.post, { cascade: true })
-    // files: File[];
-
-    //files: string[];
+    
+    //files: list of files seperated by a comma ',';
     @Column({ type: 'text', default: '' })
     files: string;
 

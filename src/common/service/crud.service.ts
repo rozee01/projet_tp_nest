@@ -4,10 +4,10 @@ import { HasId } from '../interfaces/hasId.interface';
 
 @Injectable()
 export class CrudService<Entity extends HasId> {
-    constructor(private readonly repository: Repository<Entity>) {}
+    constructor(private readonly repository: Repository<Entity>) { }
 
-    create(entity: DeepPartial<Entity>): Promise<Entity> {
-        return this.repository.save(entity);
+    async create(entity: DeepPartial<Entity>): Promise<Entity> {
+        return await this.repository.save(entity);
     }
 
     async update(id: string, updateDto: DeepPartial<Entity>): Promise<Entity> {
@@ -18,7 +18,7 @@ export class CrudService<Entity extends HasId> {
         if (!entity) {
             throw new NotFoundException('entity Not Found');
         }
-        return this.repository.save(entity);
+        return await this.repository.save(entity);
     }
 
     async remove(id: string): Promise<UpdateResult> {
@@ -38,11 +38,11 @@ export class CrudService<Entity extends HasId> {
     }
 
     async findAll(): Promise<Entity[]> {
-        return this.repository.find();
+        return await this.repository.find();
     }
 
-    findOne(id): Promise<Entity> {
-        const result = this.repository.findOneBy({ id });
+    async findOne(id): Promise<Entity> {
+        const result = await this.repository.findOneBy({ id });
         if (!result) {
             throw new HttpException('entity Not Found', 404);
         }
