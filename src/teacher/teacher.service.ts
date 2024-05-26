@@ -32,8 +32,9 @@ export class TeacherService extends CrudService<Teacher> {
         if (!teacher) {
             throw new NotFoundException(`Teacher with ID ${createClassDto.teacherId} not found`);
         }
-
+        
         const students = await this.studentRepository.find({ where: { level: createClassDto.level }, relations : ["user"], });
+        console.log(students);
         if (students.length === 0) {
             console.log("no students in taht level")
         }
@@ -42,7 +43,8 @@ export class TeacherService extends CrudService<Teacher> {
 
         for (const student of students) {
             await this.classService.enroll(newClass.id, student.id);
-            await this.emailServerService.SendPostMail(student.user.email, student.user.firstName);
+            
+            await this.emailServerService.SendPostMail(student.user.email, student.user.firstName, newClass.class_name);
         }
 
         return newClass;

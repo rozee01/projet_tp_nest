@@ -29,7 +29,7 @@ export class ClassService extends CrudService<Class> {
         if (!teacher) {
             throw new NotFoundException(`Teacher not found`);
         }
-        console.log('teacher:', teacher);
+        
 
         const classEntity = this.classRepository.create(createClassDto);
         void this.teacherService.linkClassToTeacher(teacher.id, classEntity.id);
