@@ -37,7 +37,7 @@ export class CrudService<Entity extends HasId> {
         return result;
     }
 
-    findAll(): Promise<Entity[]> {
+    async findAll(): Promise<Entity[]> {
         return this.repository.find();
     }
 
