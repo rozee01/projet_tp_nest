@@ -40,8 +40,8 @@ async function bootstrap() {
         origin: '*',
     });
     // Augmenter la limite de taille du corps de la requête à 50mb
-  app.use(bodyParser.json({ limit: '50mb' }));
-  app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
+    app.use(bodyParser.json({ limit: '50mb' }));
+    app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 
     await app.listen(port, async () => {
         console.log('[WEB] Listening To ', await app.getUrl());

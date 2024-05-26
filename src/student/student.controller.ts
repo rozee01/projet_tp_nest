@@ -21,16 +21,25 @@ import { JWTGuard } from 'src/auth/guard/jwt.guard';
 import { JwtPayloadDto } from 'src/auth/dto/jwt-payload.dto';
 import { UserDecorator } from 'src/common/decorators/user.decorator';
 import { Student } from './entities/student.entity';
+import { StudentSignUpDTO } from 'src/auth/dto/studentsignup.dto';
+import { PostsService } from 'src/posts/posts.service';
 
 @Controller('students')
 export class StudentController {
     constructor(
         private readonly studentsService: StudentService,
         private readonly authService: AuthService,
+        private readonly postsService: PostsService,
     ) {}
 
+    @UseGuards(JWTGuard)
+    @Get(':id/posts')
+    async getStudentPosts(@Param('id') studentId: string) {
+        return this.postsService.findPostsByStudentId(studentId);
+    }
+
     @Post()
-    async create(@Body() signUp: SignUpDTO) {
+    async create(@Body() signUp: StudentSignUpDTO) {
         const { valid, err } = await this.authService.checkValid(signUp);
         if (!valid) {
             if (!err) throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST);

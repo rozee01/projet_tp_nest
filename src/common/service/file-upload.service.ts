@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from "@nestjs/common";
+import { BadRequestException, Injectable } from '@nestjs/common';
 import * as fs from 'fs';
 import * as path from 'path';
 
@@ -6,13 +6,13 @@ import * as path from 'path';
 export class FileUploadService {
     private readonly uploadFolder = 'uploads';
 
-  saveFile(file: Express.Multer.File): string {
-    const filePath = path.join(this.uploadFolder, file.originalname);
-    fs.writeFileSync(filePath, file.buffer);
-    return filePath;
-  }
+    saveFile(file: Express.Multer.File): string {
+        const filePath = path.join(this.uploadFolder, file.originalname);
+        fs.writeFileSync(filePath, file.buffer);
+        return filePath;
+    }
 
-  getFilePath(filename: string): string {
-    return path.join(this.uploadFolder, filename);
-  }
+    getFilePath(filename: string): string {
+        return path.join(this.uploadFolder, filename);
+    }
 }

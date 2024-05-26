@@ -1,16 +1,25 @@
-import { Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { TeacherService } from './teacher.service';
 import { TeacherController } from './teacher.controller';
 import { Teacher } from './entities/teacher.entity';
-import { TypeOrmModule } from '@nestjs/typeorm';
+import { User } from 'src/users/entities/user.entity';
 import { Class } from 'src/class/entities/class.entity';
+import { ClassModule } from 'src/class/class.module';
+import { UsersModule } from 'src/users/users.module';
 import { AuthService } from 'src/auth/auth.service';
 import { UsersService } from 'src/users/users.service';
 import { JwtService } from '@nestjs/jwt';
-import { User } from 'src/users/entities/user.entity';
+import { EmailServerModule } from 'src/email-server/email-server.module';
+import { Student } from 'src/student/entities/student.entity';
 
 @Module({
-    imports: [TypeOrmModule.forFeature([Teacher, Class, User])],
+    imports: [
+        TypeOrmModule.forFeature([Teacher, User, Student]),
+        forwardRef(() => ClassModule), // Use forwardRef here
+        UsersModule,
+        EmailServerModule,
+    ],
     providers: [TeacherService, AuthService, UsersService, JwtService],
     controllers: [TeacherController],
     exports: [TeacherService],

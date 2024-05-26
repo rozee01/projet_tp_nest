@@ -4,7 +4,7 @@ import { HasId } from '../interfaces/hasId.interface';
 
 @Injectable()
 export class CrudService<Entity extends HasId> {
-    constructor(private readonly repository: Repository<Entity>) { }
+    constructor(private readonly repository: Repository<Entity>) {}
 
     async create(entity: DeepPartial<Entity>): Promise<Entity> {
         return await this.repository.save(entity);

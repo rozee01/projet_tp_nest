@@ -9,8 +9,9 @@ import {
     UseGuards,
     HttpException,
     HttpStatus,
-    UnauthorizedException, UseInterceptors,
-    UploadedFile
+    UnauthorizedException,
+    UseInterceptors,
+    UploadedFile,
 } from '@nestjs/common';
 import { TeacherService } from './teacher.service';
 import { SignUpDTO } from 'src/auth/dto/signup.dto';
@@ -21,6 +22,7 @@ import { UserDecorator } from 'src/common/decorators/user.decorator';
 import { JwtPayloadDto } from 'src/auth/dto/jwt-payload.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { Teacher } from './entities/teacher.entity';
+import { CreateClassDto } from 'src/class/dto/create-class.dto';
 @Controller('teachers')
 export class TeacherController {
     constructor(
@@ -48,7 +50,12 @@ export class TeacherController {
     findAll() {
         return this.teachersService.findAll();
     }
-
+    @Post('createclass')
+    @UseGuards(JWTGuard)
+    async LevelClassCreate(@Body() classDTO: CreateClassDto, @UserDecorator() user: JwtPayloadDto) {
+        const newClass = await this.teachersService.createClassForLevel(classDTO, user.id);
+        return newClass;
+    }
     @Get(':id')
     @UseGuards(JWTGuard)
     findOne(@Param('id') id: string) {

@@ -1,5 +1,7 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { SoftDelete } from 'src/common/database/softdelete.entity';
+import { Teacher } from 'src/teacher/entities/teacher.entity';
+import { Class } from 'src/class/entities/class.entity';
 @Entity()
 export class Post extends SoftDelete {
     @PrimaryGeneratedColumn('uuid')
@@ -8,11 +10,13 @@ export class Post extends SoftDelete {
     title: string;
     @Column()
     content: string;
-    
-    //files: list of files seperated by a comma ',';
-    @Column({ type: 'text', default: '' })
-    files: string;
+    @Column({ type: 'simple-array', default: '' })
+    files: string[];
 
-    /* @Column()
-    author:User;*/
+    @ManyToOne(() => Class, (className) => className.posts)
+    @JoinColumn({ name: 'class_id' }) // Add this line
+    className: Class;
+
+    @ManyToOne(() => Teacher, (teacher) => teacher.posts, { onDelete: 'CASCADE' })
+    author: Teacher;
 }
