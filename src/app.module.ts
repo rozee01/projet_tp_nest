@@ -13,9 +13,12 @@ import { SubjectModule } from './subject/subject.module';
 import { StudentModule } from './student/student.module';
 import { TeacherModule } from './teacher/teacher.module';
 import { AnnouncementModule } from './announcement/announcement.module';
-import { StudentClassModule } from './student-class/student-class.module';
+
+import { MailerModule } from '@nestjs-modules/mailer';
 
 import { entitiesList } from './common/entities/entities';
+import { EmailServerModule } from './email-server/email-server.module';
+import { TestiController } from './testi/testi.controller';
 @Module({
     imports: [
         ConfigModule.forRoot({
@@ -49,7 +52,11 @@ import { entitiesList } from './common/entities/entities';
         TeacherModule,
         SubjectModule,
         AnnouncementModule,
-        StudentClassModule,
+        
+        EmailServerModule,
+        
     ],
-})
+    controllers: [TestiController],
+}
+)
 export class AppModule {}
