@@ -9,6 +9,6 @@ import { TeacherModule } from 'src/teacher/teacher.module';
 @Module({
     controllers: [ClassController],
     providers: [ClassService],
-    imports: [TypeOrmModule.forFeature([Class]) ,TeacherModule],
+    imports: [TypeOrmModule.forFeature([Class]), TeacherModule],
 })
 export class ClassModule {}

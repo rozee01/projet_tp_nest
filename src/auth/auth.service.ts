@@ -6,7 +6,7 @@ import { JwtService } from '@nestjs/jwt';
 import { JwtPayloadDto } from './dto/jwt-payload.dto';
 import { User } from 'src/users/entities/user.entity';
 import { SignUpDTO } from './dto/signup.dto';
-import { validate } from 'deep-email-validator';
+import { verifyEmail } from '@devmehq/email-validator-js';
 import { RoleEnum } from 'src/common/enum/roles.enum';
 
 @Injectable()
@@ -35,37 +35,21 @@ export class AuthService {
         //  prevents spammers from signing up using disposable email
         // prevent fake people from registering
         // Uses the library "deep-email-validator"
-        const ValidationResult = validate(signUp.email);
+        const ValidationResult = verifyEmail({
+            emailAddress: signUp.email,
+            verifyMx: true,
+            verifySmtp: true,
+            timeout: 3000,
+        });
         const user = this.usersService.findOnebyEmail(signUp.email);
-        const { valid, validators } = await ValidationResult;
-        if (!valid) {
-            let msg = '';
-            if (validators.disposable) {
-                msg += validators.disposable;
-            }
-            if (validators.mx) {
-                if (msg != '') msg += ' AND, ';
-                msg += validators.mx;
-            }
-            if (validators.regex) {
-                if (msg != '') msg += ' AND, ';
-                msg += validators.regex;
-            }
-            if (validators.smtp) {
-                if (msg != '') msg += ' AND, ';
-                msg += validators.smtp;
-            }
-            if (validators.typo) {
-                if (msg != '') msg += ' AND, ';
-                msg += validators.typo;
-            }
-            if (msg == '') msg = 'Invalid Mail';
+        const { validFormat, validSmtp, validMx } = await ValidationResult;
+        if (!validFormat || !validMx || !validSmtp) {
             return {
                 valid: false,
                 err: new HttpException(
                     {
                         message: 'Please provide a valid email address.',
-                        reason: msg,
+                        reason: 'Email Format is wrong or email not found',
                     },
                     HttpStatus.BAD_REQUEST,
                 ),

@@ -13,7 +13,6 @@ export class ClassService extends CrudService<Class> {
         @InjectRepository(Class)
         private readonly classRepository: Repository<Class>,
         private readonly teacherService: TeacherService,
-        
     ) {
         super(classRepository);
     }

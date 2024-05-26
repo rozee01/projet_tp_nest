@@ -42,7 +42,7 @@ export class CrudService<Entity extends HasId> {
     }
 
     findOne(id): Promise<Entity> {
-        const result=this.repository.findOneBy({ id });
+        const result = this.repository.findOneBy({ id });
         if (!result) {
             throw new HttpException('entity Not Found', 404);
         }

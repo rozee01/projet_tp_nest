@@ -49,5 +49,4 @@ export class TeacherService extends CrudService<Teacher> {
         // Save the updated teacher entity
         return this.teacherRepository.save(teacher);
     }
- 
 }
