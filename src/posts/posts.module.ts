@@ -10,12 +10,13 @@ import { EmailServerModule } from 'src/email-server/email-server.module';
 import { TeacherService } from 'src/teacher/teacher.service';
 import { ClassService } from 'src/class/class.service';
 import { TeacherModule } from 'src/teacher/teacher.module';
+import { Class } from 'src/class/entities/class.entity';
 
 @Module({
     imports: [
-        TypeOrmModule.forFeature([Post]),
-        forwardRef(() => ClassModule),
-        EmailServerModule,
+        TypeOrmModule.forFeature([Post, Class]), 
+        forwardRef(() => ClassModule), 
+        EmailServerModule, 
         forwardRef(() => TeacherModule),
         forwardRef(() => StudentModule),
     ],

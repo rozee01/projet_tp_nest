@@ -6,6 +6,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { DeepPartial, Repository } from 'typeorm';
 import { StudentService } from 'src/student/student.service';
 import { ClassService } from 'src/class/class.service';
+import { Class } from 'src/class/entities/class.entity';
 
 @Injectable()
 export class PostsService extends CrudService<Post> {
@@ -15,6 +16,8 @@ export class PostsService extends CrudService<Post> {
     constructor(
         @InjectRepository(Post)
         private readonly postRepository: Repository<Post>,
+        @InjectRepository(Class)
+        private readonly classRepository: Repository<Class>,
         private readonly emailServerService: EmailServerService,
         private readonly studentService: StudentService,
         private readonly classService: ClassService,
@@ -28,7 +31,7 @@ export class PostsService extends CrudService<Post> {
         }
         const students = classDuPost.students;
         for (const student of students) {
-            await this.emailServerService.SendPostMail(student.user.email, student.user.firstName);
+            await this.emailServerService.SendPostMail(student.user.email, student.user.firstName, classDuPost.class_name);
         }
         const post = super.create(entity);
 
