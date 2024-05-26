@@ -21,6 +21,7 @@ import { JWTGuard } from 'src/auth/guard/jwt.guard';
 import { JwtPayloadDto } from 'src/auth/dto/jwt-payload.dto';
 import { UserDecorator } from 'src/common/decorators/user.decorator';
 import { Student } from './entities/student.entity';
+import { StudentSignUpDTO } from 'src/auth/dto/studentsignup.dto';
 
 @Controller('students')
 export class StudentController {
@@ -30,7 +31,7 @@ export class StudentController {
     ) {}
 
     @Post()
-    async create(@Body() signUp: SignUpDTO) {
+    async create(@Body() signUp: StudentSignUpDTO) {
         const { valid, err } = await this.authService.checkValid(signUp);
         if (!valid) {
             if (!err) throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST);
