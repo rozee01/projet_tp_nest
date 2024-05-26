@@ -4,7 +4,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 
 import { AuthModule } from './auth/auth.module';
-import { FilesModule } from './files/files.module';
 import { ClassModule } from './class/class.module';
 import { UsersModule } from './users/users.module';
 import { PostsModule } from './posts/posts.module';
@@ -38,9 +37,7 @@ import { entitiesList } from './common/entities/entities';
         }),
         AuthModule,
         UsersModule,
-        FilesModule,
         PostsModule,
-        FilesModule,
         ClassModule,
         CommonModule,
         StudentModule,
