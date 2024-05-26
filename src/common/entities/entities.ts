@@ -6,4 +6,4 @@ import { User } from 'src/users/entities/user.entity';
 import { Post } from 'src/posts/entities/post.entity';
 
 const entitiesList = [Post, Announcement, User, Student, Class, Teacher];
-export { entitiesList };
+export { entitiesList};

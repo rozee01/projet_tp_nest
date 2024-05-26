@@ -7,6 +7,11 @@ export class CreatePostDto {
     @IsNotEmpty()
     @IsString()
     content: string;
+
+    @IsNotEmpty()
+    @IsString()
+    classId: string
+    
     // @IsArray()
     // @IsOptional()
     // files: string[];

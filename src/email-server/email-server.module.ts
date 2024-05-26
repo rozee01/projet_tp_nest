@@ -31,7 +31,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
         },
         template: { 
           dir: join(__dirname, '././././'),
-          adapter: new HandlebarsAdapter(), // or new PugAdapter() or new EjsAdapter()
+          adapter: new HandlebarsAdapter(), 
           options: {
             strict: true,
           },
@@ -41,7 +41,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
     }),
   ],
   providers: [EmailServerService],
-  exports: [EmailServerService], // 👈 export for DI
+  exports: [EmailServerService], 
 })
 // eslint-disable-next-line @typescript-eslint/no-extraneous-class
 export class EmailServerModule {}

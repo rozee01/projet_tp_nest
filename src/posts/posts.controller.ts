@@ -44,8 +44,7 @@ export class PostsController {
         // Process files
         const filePaths = files.map(file => this.filesService.saveFile(file));
         const post = {
-            title: createPostDto.title,
-            content: createPostDto.content,
+            ...createPostDto,
             files: filePaths.join(','),
         };
         return this.postsService.create(post);

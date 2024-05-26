@@ -1,8 +1,9 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, ManyToMany, JoinTable } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, ManyToMany, JoinTable, OneToMany } from 'typeorm';
 
 import { Teacher } from 'src/teacher/entities/teacher.entity';
 import { SoftDelete } from 'src/common/database/softdelete.entity';
 import { Student } from 'src/student/entities/student.entity';
+import { Post } from 'src/posts/entities/post.entity';
 
 
 @Entity()
@@ -12,6 +13,12 @@ export class Class extends SoftDelete {
 
     @Column({ nullable: false })
     class_name: string;
+
+    @Column({nullable: true})
+    description : string ;
+
+    @OneToMany(() => Post, (post) => post.class)
+    posts: Post[];
 
     @ManyToMany(() => Student, (student) => student.classes, {onDelete: 'NO ACTION', onUpdate: 'NO ACTION'})
     @JoinTable(
