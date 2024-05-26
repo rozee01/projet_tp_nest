@@ -26,6 +26,5 @@ export class Teacher extends SoftDelete {
         }
     }
     @OneToMany(()=>Post, (post)=>post.author, {onDelete: 'CASCADE'})
-    @Column()
     posts:Post[];
 }
