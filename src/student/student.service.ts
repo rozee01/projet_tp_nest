@@ -14,6 +14,10 @@ export class StudentService extends CrudService<Student> {
         super(studentRepository);
     }
 
+    async findOne(Id: string): Promise<Student> {
+        return this.studentRepository.findOne({where : {id: Id} , relations: ['classes']})
+    }
+
     async create(studentData: Partial<Student>): Promise<Student> {
         // Check if the user object exists and if the role is set to STUDENT
         if (!studentData.user || studentData.user.role !== RoleEnum.STUDENT) {
