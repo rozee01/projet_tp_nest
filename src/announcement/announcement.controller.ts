@@ -14,9 +14,9 @@ import { eventType } from 'src/common/eventType';
 @Controller('announcement')
 
 export class AnnouncementController {
-    constructor(private readonly announcementService: AnnouncementService,private eventEmitter: EventEmitter2) {}
+    constructor(private readonly announcementService: AnnouncementService,/*private eventEmitter: EventEmitter2*/) {}
  
-    @Sse('sse')
+   /* @Sse('sse')
     sse(): Observable<MessageEvent> {
         return fromEvent(this.eventEmitter, 'persistence').pipe(
           filter((payload): payload is eventType => payload.hasOwnProperty('post') && payload.hasOwnProperty('user') && payload.hasOwnProperty('action') && payload.hasOwnProperty('class')),
@@ -26,7 +26,7 @@ export class AnnouncementController {
           }),
         );
       }
-    
+    */
     @Post()
     @UseGuards(JWTGuard)
     create(@UserDecorator() user: JwtPayloadDto, @Body() createAnnouncementDto: CreateAnnouncementDto) {
