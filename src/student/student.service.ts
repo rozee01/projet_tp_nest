@@ -19,7 +19,7 @@ export class StudentService extends CrudService<Student> {
         if (!studentData.user || studentData.user.role !== RoleEnum.STUDENT) {
             throw new NotFoundException('User must have the student role to be assigned as a student');
         }
-        studentData.studentClasses = [];
+        studentData.classes = [];
         return super.create(studentData);
     }
 }

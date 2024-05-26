@@ -1,9 +1,10 @@
-import { BeforeInsert, BeforeUpdate, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { BeforeInsert, BeforeUpdate, Entity, JoinColumn, ManyToMany, OneToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { User } from '../../users/entities/user.entity';
-import { StudentClass } from 'src/student-class/entities/studentclass.entity';
+
 import { SoftDelete } from 'src/common/database/softdelete.entity';
 import { BadRequestException } from '@nestjs/common';
 import { RoleEnum } from 'src/common/enum/roles.enum';
+import { Class } from 'src/class/entities/class.entity';
 
 @Entity()
 export class Student extends SoftDelete {
@@ -14,8 +15,9 @@ export class Student extends SoftDelete {
     @JoinColumn({ name: 'id' })
     user: User;
 
-    @OneToMany(() => StudentClass, (studentClass) => studentClass.student)
-    studentClasses: StudentClass[];
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+    @ManyToMany(() => Class, (Class) => Class.students)
+    classes: Class[];
 
     @BeforeInsert()
     @BeforeUpdate()
