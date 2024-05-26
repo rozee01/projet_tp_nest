@@ -9,7 +9,6 @@ import { ClassModule } from './class/class.module';
 import { UsersModule } from './users/users.module';
 import { PostsModule } from './posts/posts.module';
 import { CommonModule } from './common/common.module';
-import { SubjectModule } from './subject/subject.module';
 import { StudentModule } from './student/student.module';
 import { TeacherModule } from './teacher/teacher.module';
 import { AnnouncementModule } from './announcement/announcement.module';
@@ -47,7 +46,6 @@ import { entitiesList } from './common/entities/entities';
         StudentModule,
         TeacherModule,
         TeacherModule,
-        SubjectModule,
         AnnouncementModule,
         StudentClassModule,
     ],
