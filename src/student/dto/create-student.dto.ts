@@ -13,4 +13,7 @@ export class CreateStudentDto {
 
     @IsNotEmpty()
     password: string;
+
+    @IsNotEmpty()
+    level: string;
 }
