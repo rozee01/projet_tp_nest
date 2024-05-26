@@ -93,7 +93,7 @@ if (files && files.length > 0) {
     findOne(@Param('id') id: string) {
         return this.postsService.findOne(id);
     }
-
+/*
     @Patch(':id')
     @UseGuards(JWTGuard)
     async update(
@@ -109,7 +109,7 @@ if (files && files.length > 0) {
         }
 
         // Process new files if any
-        let fileNames = existingPost.files ? existingPost.files.split(',') : [];
+        /*let fileNames = existingPost.files ? existingPost.files.split(',') : [];
         if (files && files.length > 0) {
             const newFilePaths = files.map((file) => this.filesService.saveFile(file));
             fileNames = [...fileNames, ...newFilePaths];
@@ -120,9 +120,10 @@ if (files && files.length > 0) {
             content: updatePostDto.content ?? existingPost.content,
             files: fileNames.join(','),
         };
-
+        
         return this.postsService.update(id, postUpdate);
     }
+    */
 
     @Delete(':id')
     @UseGuards(JWTGuard)
