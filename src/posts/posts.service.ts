@@ -31,7 +31,11 @@ export class PostsService extends CrudService<Post> {
         }
         const students = classDuPost.students;
         for (const student of students) {
-            await this.emailServerService.SendPostMail(student.user.email, student.user.firstName, classDuPost.class_name);
+            await this.emailServerService.SendPostMail(
+                student.user.email,
+                student.user.firstName,
+                classDuPost.class_name,
+            );
         }
         const post = super.create(entity);
 

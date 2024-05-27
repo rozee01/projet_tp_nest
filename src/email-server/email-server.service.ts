@@ -6,22 +6,22 @@ import { Student } from 'src/student/entities/student.entity';
 
 @Injectable()
 export class EmailServerService {
-    constructor (private mailerService: MailerService){}
-    async SendClassMail(email: string, name: string,className: string){
-        const url= 'https://www.google.tn';
+    constructor(private mailerService: MailerService) {}
+    async SendClassMail(email: string, name: string, className: string) {
+        const url = 'https://www.google.tn';
         await this.mailerService.sendMail({
-            to : email ,
-            subject: "check this new Class",
+            to: email,
+            subject: 'check this new Class',
             template: '../../src/email-server/templates/ClassCreation.hbs',
-            context: {  
+            context: {
                 classname: className,
                 name,
                 url,
             },
-        })
+        });
     }
-    async SendPostMail(email: string, name: string,className: string){
-        const url= 'https://www.google.tn';
+    async SendPostMail(email: string, name: string, className: string) {
+        const url = 'https://www.google.tn';
         await this.mailerService.sendMail({
             to: email,
             subject: 'check this new post',

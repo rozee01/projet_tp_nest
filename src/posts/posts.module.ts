@@ -14,9 +14,9 @@ import { Class } from 'src/class/entities/class.entity';
 
 @Module({
     imports: [
-        TypeOrmModule.forFeature([Post, Class]), 
-        forwardRef(() => ClassModule), 
-        EmailServerModule, 
+        TypeOrmModule.forFeature([Post, Class]),
+        forwardRef(() => ClassModule),
+        EmailServerModule,
         forwardRef(() => TeacherModule),
         forwardRef(() => StudentModule),
     ],

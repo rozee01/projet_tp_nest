@@ -49,7 +49,11 @@ export class TeacherService extends CrudService<Teacher> {
 
         for (const student of students) {
             await this.classService.enroll(newClass.id, student.id);
-            await this.emailServerService.SendClassMail(student.user.email, student.user.firstName, newClass.class_name);
+            await this.emailServerService.SendClassMail(
+                student.user.email,
+                student.user.firstName,
+                newClass.class_name,
+            );
         }
 
         return newClass;

@@ -26,6 +26,7 @@ export class Teacher extends SoftDelete {
     user: User;
 
     @OneToMany(() => Class, (classEntity) => classEntity.teacher)
+    @JoinColumn({ name: 'class_id' })
     classesTaught: Class[];
 
     @BeforeInsert()
@@ -36,5 +37,6 @@ export class Teacher extends SoftDelete {
         }
     }
     @OneToMany(() => Post, (post) => post.author, { onDelete: 'CASCADE' })
+    @JoinColumn({ name: 'post_id' })
     posts: Post[];
 }

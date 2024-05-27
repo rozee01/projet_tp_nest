@@ -9,7 +9,6 @@ export class User extends SoftDelete {
     id: string;
 
     @Column({ nullable: false, unique: true })
-    @Index()
     email: string;
 
     @Column({ nullable: false })

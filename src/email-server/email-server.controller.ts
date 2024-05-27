@@ -5,8 +5,8 @@ import { EmailServerService } from './email-server.service';
 export class EmailServerController {
     constructor(private readonly emailServerService: EmailServerService) {}
 
-  @Post('send-confirmation')
-  async sendConfirmation(@Body() body: { email: string, username: string, className: string, token: string }) {
-    await this.emailServerService.SendClassMail(body.email, body.username, body.className);
-  }
+    @Post('send-confirmation')
+    async sendConfirmation(@Body() body: { email: string; username: string; className: string; token: string }) {
+        await this.emailServerService.SendClassMail(body.email, body.username, body.className);
+    }
 }
