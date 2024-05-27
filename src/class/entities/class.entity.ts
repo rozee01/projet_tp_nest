@@ -16,7 +16,7 @@ export class Class extends SoftDelete {
     @Column({ nullable: true })
     description: string;
 
-    @OneToMany(() => Post, (post) => post.className)
+    @OneToMany(() => Post, (post) => post.class_name)
     posts: Post[];
 
     @ManyToMany(() => Student, (student) => student.classes, { onDelete: 'NO ACTION', onUpdate: 'NO ACTION' })

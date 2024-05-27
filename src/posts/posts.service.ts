@@ -6,7 +6,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { DeepPartial, Repository } from 'typeorm';
 import { StudentService } from 'src/student/student.service';
 import { ClassService } from 'src/class/class.service';
-import { Class } from 'src/class/entities/class.entity';
 import { TeacherService } from 'src/teacher/teacher.service';
 
 @Injectable()
@@ -14,8 +13,6 @@ export class PostsService extends CrudService<Post> {
     constructor(
         @InjectRepository(Post)
         private readonly postRepository: Repository<Post>,
-        @InjectRepository(Class)
-        private readonly classRepository: Repository<Class>,
         private readonly emailServerService: EmailServerService,
         private readonly studentService: StudentService,
         private readonly classService: ClassService,
@@ -24,13 +21,12 @@ export class PostsService extends CrudService<Post> {
         super(postRepository);
     }
     async create(entity: DeepPartial<Post>): Promise<Post> {
-        
-        const classDuPost = await this.classService.findByName(entity.className.class_name);
-        
+        /*const classDuPost = await this.classService.findByName(entity.class_name.class_name);
+
         if (!classDuPost) {
             throw new NotFoundException('class not found');
         }
-        
+
         const students = classDuPost.students;
         console.log(students);
         for (const student of students) {
@@ -39,7 +35,7 @@ export class PostsService extends CrudService<Post> {
                 student.user.firstName,
                 classDuPost.class_name,
             );
-        }
+        }*/
         const post = await super.create(entity);
 
         return post;
@@ -56,6 +52,7 @@ export class PostsService extends CrudService<Post> {
 
         const posts = student.classes.flatMap((classEntity) => classEntity.posts);
         return posts;
+    
     }
 
     async findAllByTeacher(teacherId: string): Promise<Post[]> {
