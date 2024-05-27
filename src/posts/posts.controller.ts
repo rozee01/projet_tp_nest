@@ -43,7 +43,7 @@ export class PostsController {
     @Sse('sse')
     sse(): Observable<MessageEvent> {
         return fromEvent(this.eventEmitter, 'persistence').pipe(
-          filter((payload): payload is eventType => payload.hasOwnProperty('post') && payload.hasOwnProperty('user') && payload.hasOwnProperty('action') && payload.hasOwnProperty('class')),
+          filter((payload): payload is eventType => payload.hasOwnProperty('post') && payload.hasOwnProperty('user') && payload.hasOwnProperty('class')),
           map((payload: eventType) => {
             console.log('payload', payload);
           return new MessageEvent('persistence event', { data: payload });
@@ -82,8 +82,7 @@ if (files && files.length > 0) {
         this.eventEmitter.emit('persistence', {
             post: post,
             user: p.author,
-            class: p.className,
-            action: ActionEnum.CREATE,
+            class: p.class_name,
         });
         return p;
     }
