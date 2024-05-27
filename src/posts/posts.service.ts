@@ -19,14 +19,14 @@ export class PostsService extends CrudService<Post> {
         super(postRepository);
     }
     async create(entity: DeepPartial<Post>): Promise<Post> {
-        const classDuPost = await this.classService.findOne(entity.className.id);
+        /*const classDuPost = await this.classService.findOne(entity.class_name.id);
         if (!classDuPost) {
             throw new NotFoundException('class not found');
         }
         const students = classDuPost.students;
         for (const student of students) {
             await this.emailServerService.SendPostMail(student.user.email, student.user.firstName);
-        }
+        }*/
         const post = super.create(entity);
 
         return post;
@@ -34,7 +34,7 @@ export class PostsService extends CrudService<Post> {
     async findAllByTeacher(teacherId: string): Promise<Post[]> {
         return this.postRepository.find({
             where: { author: { id: teacherId } },
-            relations: ['author', 'className'], // Include related entities if needed
+            relations: ['author', 'class_name'], // Include related entities if needed
         });
     }
 }

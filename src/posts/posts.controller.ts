@@ -63,12 +63,12 @@ if (files && files.length > 0) {
     post = {
         ...createPostDto,
         files: filePaths.join(','),
-        className: await this.classService.findByName(createPostDto.className)
+        class_name: await this.classService.findByName(createPostDto.class_name)
     };
 } else {
     post = {
         ...createPostDto,
-        className: await this.classService.findByName(createPostDto.className)
+        class_name: await this.classService.findByName(createPostDto.class_name)
     };
 }
 
@@ -133,7 +133,8 @@ if (files && files.length > 0) {
     }
     @Get('download/:filename')
     downloadFile(@Param('filename') filename: string, @Res() res: Response) {
-        const filePath = this.filesService.getFilePath(filename);
+        //const filePath = this.filesService.getFilePath(filename);
+        const filePath = `./uploads/${filename.replace(/\\/g, '/')}`;
         if (!existsSync(filePath)) {
             throw new NotFoundException(`File ${filename} not found`);
         }

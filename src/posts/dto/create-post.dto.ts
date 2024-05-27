@@ -9,6 +9,6 @@ export class CreatePostDto {
     @IsString()
     content: string;
     @IsString()
-    className:string;
+    class_name:string;
 
 }
