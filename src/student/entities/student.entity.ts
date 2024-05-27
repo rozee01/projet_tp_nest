@@ -5,12 +5,10 @@ import {
     Entity,
     JoinColumn,
     ManyToMany,
-    OneToMany,
     OneToOne,
     PrimaryGeneratedColumn,
 } from 'typeorm';
 import { User } from '../../users/entities/user.entity';
-
 import { SoftDelete } from 'src/common/database/softdelete.entity';
 import { BadRequestException } from '@nestjs/common';
 import { RoleEnum } from 'src/common/enum/roles.enum';
