@@ -35,6 +35,7 @@ export class TeacherService extends CrudService<Teacher> {
         if (!teacher) {
             throw new NotFoundException(`Teacher with ID ${teacherId} not found`);
         }
+        
 
         const students = await this.studentRepository.find({
             where: { level: createClassDto.level },
@@ -44,9 +45,9 @@ export class TeacherService extends CrudService<Teacher> {
         if (students.length === 0) {
             console.log('no students in taht level');
         }
-
+        console.log("ddddddddddddddddddd")
         const newClass = await this.classService.createClass(createClassDto, teacherId);
-
+        console.log({newClass});
         for (const student of students) {
             await this.classService.enroll(newClass.id, student.id);
             await this.emailServerService.SendClassMail(
@@ -79,7 +80,7 @@ export class TeacherService extends CrudService<Teacher> {
         if (!teacher) {
             throw new NotFoundException(`Teacher with ID ${teacherId} not found`);
         }
-
+        console.log("console" + classId)
         const classEntity = await this.classService.findOne(classId);
         if (!classEntity) {
             throw new NotFoundException(`Class with ID ${classId} not found`);

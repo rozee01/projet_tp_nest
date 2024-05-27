@@ -27,7 +27,7 @@ export class Class extends SoftDelete {
             referencedColumnName: 'id',
         },
         inverseJoinColumn: {
-            name: 'class_id',
+            name: 'class_id', 
             referencedColumnName: 'id',
         },
     })

@@ -29,10 +29,14 @@ export class ClassService extends CrudService<Class> {
         if (!teacher) {
             throw new NotFoundException(`Teacher not found`);
         }
-
+        console.log({"ffffffffffffffff" :createClassDto})
         const classEntity = this.classRepository.create(createClassDto);
-        void this.teacherService.linkClassToTeacher(teacher.id, classEntity.id);
-        return await this.classRepository.save(classEntity);
+        
+        
+        const madeClass =  await this.classRepository.save(classEntity);
+        void this.teacherService.linkClassToTeacher(teacher.id, madeClass.id);
+        return madeClass
+
     }
 
     async enroll(classId: string, studentId: string): Promise<void> {
