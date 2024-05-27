@@ -1,7 +1,6 @@
 import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export class CreatePostDto {
-
     @IsNotEmpty()
     @IsString()
     title: string;
@@ -9,6 +8,6 @@ export class CreatePostDto {
     @IsString()
     content: string;
     @IsString()
-    className:string;
+    class_name:string;
 
 }

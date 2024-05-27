@@ -13,13 +13,12 @@ export class StudentService extends CrudService<Student> {
     ) {
         super(studentRepository);
     }
-
     async create(studentData: Partial<Student>): Promise<Student> {
         // Check if the user object exists and if the role is set to STUDENT
         if (!studentData.user || studentData.user.role !== RoleEnum.STUDENT) {
             throw new NotFoundException('User must have the student role to be assigned as a student');
         }
         studentData.classes = [];
-        return super.create(studentData);
+        return await super.create(studentData);
     }
 }

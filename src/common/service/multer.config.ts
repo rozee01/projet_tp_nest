@@ -1,6 +1,5 @@
-import { BadRequestException } from "@nestjs/common";
-import { diskStorage } from "multer";
-import { extname } from "path";
+import { diskStorage } from 'multer';
+import { extname } from 'path';
 
 export const multerConfig = {
     dest: './uploads',
@@ -11,7 +10,7 @@ export const multerConfig = {
                 const filename: string = Date.now() + extname(file.originalname);
                 callback(null, filename);
             } else {
-                callback(new Error('File not supported'),file.originalname);
+                callback(new Error('File not supported'), file.originalname);
             }
         },
     }),
