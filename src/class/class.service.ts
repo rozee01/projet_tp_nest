@@ -59,6 +59,7 @@ export class ClassService extends CrudService<Class> {
         await this.classRepository.save(classInstance);
     }
     async findByName(class_name: string): Promise<Class> {
-        return await this.classRepository.findOne({ where: { class_name } });
+    return this.classRepository.findOne({ where: { class_name } , relations : ['students', 'students.user']});
+
     }
 }
