@@ -41,10 +41,10 @@ import { ClassService } from 'src/class/class.service';
 export class PostsController {
     constructor(
         private readonly postsService: PostsService,
-        private readonly teacherService:TeacherService,
+        private readonly teacherService: TeacherService,
         private readonly classService: ClassService,
         private readonly filesService: FileUploadService,
-       // private eventEmitter: EventEmitter2,
+        // private eventEmitter: EventEmitter2,
     ) {}
 
     @Post()
@@ -93,7 +93,7 @@ if (files && files.length > 0) {
     findOne(@Param('id') id: string) {
         return this.postsService.findOne(id);
     }
-/*
+    /*
     @Patch(':id')
     @UseGuards(JWTGuard)
     async update(

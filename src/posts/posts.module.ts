@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 import { PostsService } from './posts.service';
 import { PostsController } from './posts.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -10,11 +10,18 @@ import { EmailServerModule } from 'src/email-server/email-server.module';
 import { TeacherService } from 'src/teacher/teacher.service';
 import { ClassService } from 'src/class/class.service';
 import { TeacherModule } from 'src/teacher/teacher.module';
+import { Class } from 'src/class/entities/class.entity';
 
 @Module({
+    imports: [
+        TypeOrmModule.forFeature([Post, Class]),
+        forwardRef(() => ClassModule),
+        EmailServerModule,
+        forwardRef(() => TeacherModule),
+        forwardRef(() => StudentModule),
+    ],
     controllers: [PostsController],
-    providers: [PostsService, FileUploadService,],
-    imports: [TypeOrmModule.forFeature([Post]), StudentModule, ClassModule, EmailServerModule,TeacherModule]
-
+    providers: [PostsService, FileUploadService],
+    exports: [PostsService],
 })
 export class PostsModule {}

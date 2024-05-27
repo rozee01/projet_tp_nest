@@ -1,4 +1,14 @@
-import { BeforeInsert, BeforeUpdate, Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+    BeforeInsert,
+    BeforeUpdate,
+    Column,
+    Entity,
+    JoinColumn,
+    ManyToOne,
+    OneToMany,
+    OneToOne,
+    PrimaryGeneratedColumn,
+} from 'typeorm';
 import { User } from '../../users/entities/user.entity';
 import { RoleEnum } from 'src/common/enum/roles.enum'; // Import RoleEnum
 import { Class } from 'src/class/entities/class.entity';
@@ -12,10 +22,11 @@ export class Teacher extends SoftDelete {
     id: string;
 
     @OneToOne(() => User)
-    @JoinColumn({ name: 'id' })
+    @JoinColumn({ name: 'id', foreignKeyConstraintName: 'teacher_user_id' })
     user: User;
 
     @OneToMany(() => Class, (classEntity) => classEntity.teacher)
+    @JoinColumn({ name: 'class_id' })
     classesTaught: Class[];
 
     @BeforeInsert()
@@ -25,6 +36,7 @@ export class Teacher extends SoftDelete {
             throw new BadRequestException('User must have the teacher role to be assigned as a teacher');
         }
     }
-    @OneToMany(()=>Post, (post)=>post.author, {onDelete: 'CASCADE'})
-    posts:Post[];
+    @OneToMany(() => Post, (post) => post.author, { onDelete: 'CASCADE' })
+    @JoinColumn({ name: 'post_id' })
+    posts: Post[];
 }

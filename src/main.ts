@@ -11,8 +11,8 @@ import helmet from 'helmet';
 async function bootstrap() {
     const app: NestExpressApplication = await NestFactory.create(AppModule);
     const config: ConfigService = app.get(ConfigService);
-    //const port: number = config.get<number>('SERVER_PORT') ?? 3001;
-    const port: number = 3001;
+    const port: number = config.get<number>('SERVER_PORT') ?? 3000;
+
     const configuration = new DocumentBuilder()
         .setTitle('Google Classroom Clone')
         .setDescription('The Google Classroom Clone API description')
@@ -40,8 +40,8 @@ async function bootstrap() {
         origin: '*',
     });
     // Augmenter la limite de taille du corps de la requête à 50mb
-  app.use(bodyParser.json({ limit: '50mb' }));
-  app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
+    app.use(bodyParser.json({ limit: '50mb' }));
+    app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 
     await app.listen(port, async () => {
         console.log('[WEB] Listening To ', await app.getUrl());

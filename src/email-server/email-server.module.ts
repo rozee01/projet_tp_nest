@@ -9,39 +9,38 @@ import { join } from 'path';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Module({
-  controllers: [EmailServerController],
-  imports: [
-    ConfigModule.forRoot({
-      isGlobal: true,
-    }),
-    MailerModule.forRootAsync({
-      imports: [ConfigModule],
-      useFactory: async (config: ConfigService) => ({
-        transport: {
-          host: config.get('MAIL_HOST'),
-          port: 587, // Port for SMTP
-          secure: false, // true for 465, false for other ports
-          auth: {
-            user: config.get('MAIL_USER'),
-            pass: config.get('MAIL_PASSWORD'),
-          },
-        },
-        defaults: {
-          from: `"No Reply" <${config.get('MAIL_FROM')}>`,
-        },
-        template: { 
-          dir: join(__dirname, '././././'),
-          adapter: new HandlebarsAdapter(), 
-          options: {
-            strict: true,
-          },
-        },
-      }),
-      inject: [ConfigService],
-    }),
-  ],
-  providers: [EmailServerService],
-  exports: [EmailServerService], 
+    controllers: [EmailServerController],
+    imports: [
+        ConfigModule.forRoot({
+            isGlobal: true,
+        }),
+        MailerModule.forRootAsync({
+            imports: [ConfigModule],
+            useFactory: async (config: ConfigService) => ({
+                transport: {
+                    host: config.get('MAIL_HOST'),
+                    port: 587, // Port for SMTP
+                    secure: false, // true for 465, false for other ports
+                    auth: {
+                        user: config.get('MAIL_USER'),
+                        pass: config.get('MAIL_PASSWORD'),
+                    },
+                },
+                defaults: {
+                    from: `"No Reply" <${config.get('MAIL_FROM')}>`,
+                },
+                template: {
+                    dir: join(__dirname, '././././'),
+                    adapter: new HandlebarsAdapter(),
+                    options: {
+                        strict: true,
+                    },
+                },
+            }),
+            inject: [ConfigService],
+        }),
+    ],
+    providers: [EmailServerService],
+    exports: [EmailServerService],
 })
-// eslint-disable-next-line @typescript-eslint/no-extraneous-class
 export class EmailServerModule {}

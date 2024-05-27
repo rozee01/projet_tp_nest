@@ -22,33 +22,44 @@ export class TeacherService extends CrudService<Teacher> {
         private readonly studentRepository: Repository<Student>,
         @Inject(forwardRef(() => ClassService)) // Use forwardRef here
         private readonly classService: ClassService,
-        private readonly emailServerService :EmailServerService,
+        private readonly emailServerService: EmailServerService,
     ) {
         super(teacherRepository);
     }
-    
+
     async createClassForLevel(createClassDto: CreateClassDto, teacherId: string): Promise<Class> {
-        const teacher = await this.teacherRepository.findOne({ where: { id: teacherId }, relations: ['classesTaught'] });
+        const teacher = await this.teacherRepository.findOne({
+            where: { id: teacherId },
+            relations: ['classesTaught'],
+        });
         if (!teacher) {
             throw new NotFoundException(`Teacher with ID ${teacherId} not found`);
         }
 
-        const students = await this.studentRepository.find({ where: { level: createClassDto.level }, relations : ["user"], });
+        const students = await this.studentRepository.find({
+            where: { level: createClassDto.level },
+            relations: ['user'],
+        });
+        console.log(students);
         if (students.length === 0) {
-            console.log("no students in taht level")
+            console.log('no students in taht level');
         }
 
         const newClass = await this.classService.createClass(createClassDto, teacherId);
 
         for (const student of students) {
             await this.classService.enroll(newClass.id, student.id);
-            await this.emailServerService.SendPostMail(student.user.email, student.user.firstName);
+            await this.emailServerService.SendClassMail(
+                student.user.email,
+                student.user.firstName,
+                newClass.class_name,
+            );
         }
 
         return newClass;
     }
     findOne(Id: string): Promise<Teacher> {
-        return this.teacherRepository.findOne({where : {id: Id}, relations : ["classesTaught"]})
+        return this.teacherRepository.findOne({ where: { id: Id }, relations: ['classesTaught'] });
     }
 
     async create(teacherData: Partial<Teacher>): Promise<Teacher> {
@@ -69,7 +80,7 @@ export class TeacherService extends CrudService<Teacher> {
             throw new NotFoundException(`Teacher with ID ${teacherId} not found`);
         }
 
-        const classEntity = await this.classService.findOne( classId );
+        const classEntity = await this.classService.findOne(classId);
         if (!classEntity) {
             throw new NotFoundException(`Class with ID ${classId} not found`);
         }
@@ -80,5 +91,4 @@ export class TeacherService extends CrudService<Teacher> {
         // Save the updated teacher entity
         return this.teacherRepository.save(teacher);
     }
- 
 }
