@@ -8,6 +8,7 @@ import { StudentModule } from 'src/student/student.module';
 import { ClassModule } from 'src/class/class.module';
 import { EmailServerModule } from 'src/email-server/email-server.module';
 import { TeacherModule } from 'src/teacher/teacher.module';
+import { EventEmitterModule } from '@nestjs/event-emitter';
 import { Class } from 'src/class/entities/class.entity';
 
 @Module({
@@ -19,7 +20,8 @@ import { Class } from 'src/class/entities/class.entity';
         forwardRef(() => StudentModule),
     ],
     controllers: [PostsController],
-    providers: [PostsService, FileUploadService],
-    exports: [PostsService],
+    providers: [PostsService, FileUploadService,],
+    imports: [TypeOrmModule.forFeature([Post]), StudentModule, ClassModule, EmailServerModule,TeacherModule , EventEmitterModule.forRoot(),]
+
 })
 export class PostsModule {}
