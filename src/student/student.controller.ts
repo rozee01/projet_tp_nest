@@ -9,12 +9,9 @@ import {
     HttpException,
     HttpStatus,
     UseGuards,
-    BadRequestException,
     UnauthorizedException,
 } from '@nestjs/common';
 import { StudentService } from './student.service';
-import { UpdateStudentDto } from './dto/update-student.dto';
-import { SignUpDTO } from 'src/auth/dto/signup.dto';
 import { AuthService } from 'src/auth/auth.service';
 import { RoleEnum } from 'src/common/enum/roles.enum';
 import { JWTGuard } from 'src/auth/guard/jwt.guard';

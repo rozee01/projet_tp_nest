@@ -4,7 +4,6 @@ import { TeacherService } from './teacher.service';
 import { TeacherController } from './teacher.controller';
 import { Teacher } from './entities/teacher.entity';
 import { User } from 'src/users/entities/user.entity';
-import { Class } from 'src/class/entities/class.entity';
 import { ClassModule } from 'src/class/class.module';
 import { UsersModule } from 'src/users/users.module';
 import { AuthService } from 'src/auth/auth.service';

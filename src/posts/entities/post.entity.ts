@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { SoftDelete } from 'src/common/database/softdelete.entity';
 import { Teacher } from 'src/teacher/entities/teacher.entity';
 import { Class } from 'src/class/entities/class.entity';
