@@ -1,15 +1,11 @@
-/* eslint-disable @typescript-eslint/no-unnecessary-condition */
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CrudService } from 'src/common/service/crud.service';
 import { Repository } from 'typeorm';
 import { Class } from './entities/class.entity';
 import { CreateClassDto } from './dto/create-class.dto';
-import { Teacher } from 'src/teacher/entities/teacher.entity';
 import { TeacherService } from 'src/teacher/teacher.service';
-import { Student } from 'src/student/entities/student.entity';
 import { StudentService } from '../student/student.service';
-import { UUID } from 'crypto';
 
 @Injectable()
 export class ClassService extends CrudService<Class> {
@@ -32,7 +28,7 @@ export class ClassService extends CrudService<Class> {
 
         const classEntity = this.classRepository.create(createClassDto);
         void this.teacherService.linkClassToTeacher(teacher.id, classEntity.id);
-        return this.classRepository.save(classEntity);
+        return await this.classRepository.save(classEntity);
     }
 
     async enroll(classId: string, studentId: string): Promise<void> {

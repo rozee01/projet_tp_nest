@@ -6,27 +6,29 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { DeepPartial, Repository } from 'typeorm';
 import { StudentService } from 'src/student/student.service';
 import { ClassService } from 'src/class/class.service';
-import { Class } from 'src/class/entities/class.entity';
+import { TeacherService } from 'src/teacher/teacher.service';
 
 @Injectable()
 export class PostsService extends CrudService<Post> {
     constructor(
         @InjectRepository(Post)
         private readonly postRepository: Repository<Post>,
-        @InjectRepository(Class)
-        private readonly classRepository: Repository<Class>,
         private readonly emailServerService: EmailServerService,
         private readonly studentService: StudentService,
         private readonly classService: ClassService,
+        private readonly teacherService: TeacherService,
     ) {
         super(postRepository);
     }
     async create(entity: DeepPartial<Post>): Promise<Post> {
-        /*const classDuPost = await this.classService.findOne(entity.class_name.id);
+        /*const classDuPost = await this.classService.findByName(entity.class_name.class_name);
+
         if (!classDuPost) {
             throw new NotFoundException('class not found');
         }
+
         const students = classDuPost.students;
+        console.log(students);
         for (const student of students) {
             await this.emailServerService.SendPostMail(
                 student.user.email,
@@ -34,7 +36,7 @@ export class PostsService extends CrudService<Post> {
                 classDuPost.class_name,
             );
         }*/
-        const post = super.create(entity);
+        const post = await super.create(entity);
 
         return post;
     }
@@ -52,9 +54,15 @@ export class PostsService extends CrudService<Post> {
         return posts;
     
     }
+
     async findAllByTeacher(teacherId: string): Promise<Post[]> {
-        return this.postRepository.find({
-            where: { author: { id: teacherId } },
-            relations: ['author', 'class_name'], // Include related entities if needed
-        });
-}}
+        const teacher = await this.teacherService.findOne(teacherId);
+
+        if (!teacher) {
+            throw new Error('Teacher not found');
+        }
+
+        const posts = teacher.classesTaught.flatMap((classEntity) => classEntity.posts);
+        return posts;
+    }
+}

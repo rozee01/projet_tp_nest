@@ -12,8 +12,6 @@ import { StudentModule } from './student/student.module';
 import { TeacherModule } from './teacher/teacher.module';
 import { AnnouncementModule } from './announcement/announcement.module';
 
-import { MailerModule } from '@nestjs-modules/mailer';
-
 import { entitiesList } from './common/entities/entities';
 import { EmailServerModule } from './email-server/email-server.module';
 import { TestiController } from './testi/testi.controller';

@@ -1,16 +1,6 @@
-import {
-    BeforeInsert,
-    BeforeUpdate,
-    Column,
-    Entity,
-    JoinColumn,
-    ManyToOne,
-    OneToMany,
-    OneToOne,
-    PrimaryGeneratedColumn,
-} from 'typeorm';
+import { BeforeInsert, BeforeUpdate, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { User } from '../../users/entities/user.entity';
-import { RoleEnum } from 'src/common/enum/roles.enum'; // Import RoleEnum
+import { RoleEnum } from 'src/common/enum/roles.enum';
 import { Class } from 'src/class/entities/class.entity';
 import { SoftDelete } from 'src/common/database/softdelete.entity';
 import { BadRequestException } from '@nestjs/common';
