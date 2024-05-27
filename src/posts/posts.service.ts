@@ -7,12 +7,10 @@ import { DeepPartial, Repository } from 'typeorm';
 import { StudentService } from 'src/student/student.service';
 import { ClassService } from 'src/class/class.service';
 import { Class } from 'src/class/entities/class.entity';
+import { TeacherService } from 'src/teacher/teacher.service';
 
 @Injectable()
 export class PostsService extends CrudService<Post> {
-    findAllByTeacher(teacherId: string) {
-        throw new Error('Method not implemented.');
-    }
     constructor(
         @InjectRepository(Post)
         private readonly postRepository: Repository<Post>,
@@ -21,6 +19,7 @@ export class PostsService extends CrudService<Post> {
         private readonly emailServerService: EmailServerService,
         private readonly studentService: StudentService,
         private readonly classService: ClassService,
+        private readonly teacherService: TeacherService,
     ) {
         super(postRepository);
     }
@@ -41,7 +40,7 @@ export class PostsService extends CrudService<Post> {
                 classDuPost.class_name,
             );
         }
-        const post = super.create(entity);
+        const post = await super.create(entity);
 
         return post;
     }
@@ -56,6 +55,17 @@ export class PostsService extends CrudService<Post> {
         }
 
         const posts = student.classes.flatMap((classEntity) => classEntity.posts);
+        return posts;
+    }
+
+    async findAllByTeacher(teacherId: string): Promise<Post[]> {
+        const teacher = await this.teacherService.findOne(teacherId);
+
+        if (!teacher) {
+            throw new Error('Teacher not found');
+        }
+
+        const posts = teacher.classesTaught.flatMap((classEntity) => classEntity.posts);
         return posts;
     }
 }
