@@ -32,7 +32,7 @@ export class ClassService extends CrudService<Class> {
 
         const classEntity = this.classRepository.create(createClassDto);
         void this.teacherService.linkClassToTeacher(teacher.id, classEntity.id);
-        return this.classRepository.save(classEntity);
+        return await this.classRepository.save(classEntity);
     }
 
     async enroll(classId: string, studentId: string): Promise<void> {
@@ -59,6 +59,6 @@ export class ClassService extends CrudService<Class> {
         await this.classRepository.save(classInstance);
     }
     async findByName(class_name: string): Promise<Class> {
-        return this.classRepository.findOne({ where: { class_name } });
+        return await this.classRepository.findOne({ where: { class_name } });
     }
 }

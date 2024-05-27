@@ -39,7 +39,8 @@ export class StudentController {
     }
 
     @Post()
-    async create(@Body() signUp: StudentSignUpDTO) {
+    async create(@Body() signUpL: StudentSignUpDTO) {
+        const { level, ...signUp } = signUpL;
         const { valid, err } = await this.authService.checkValid(signUp);
         if (!valid) {
             if (!err) throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST);
@@ -51,7 +52,7 @@ export class StudentController {
             if (!result.err) throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST);
             throw result.err;
         }
-        return this.studentsService.create({ user: result.user });
+        return this.studentsService.create({ user: result.user, level: level });
     }
     @Get()
     @UseGuards(JWTGuard)

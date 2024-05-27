@@ -32,9 +32,6 @@ export class AuthService {
         return user;
     }
     async checkValid(signUp: SignUpDTO): Promise<{ valid: boolean; err: HttpException | null }> {
-        //  prevents spammers from signing up using disposable email
-        // prevent fake people from registering
-        // Uses the library "deep-email-validator"
         const ValidationResult = verifyEmail({
             emailAddress: signUp.email,
             verifyMx: true,

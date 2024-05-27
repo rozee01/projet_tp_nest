@@ -58,8 +58,8 @@ export class TeacherService extends CrudService<Teacher> {
 
         return newClass;
     }
-    findOne(Id: string): Promise<Teacher> {
-        return this.teacherRepository.findOne({ where: { id: Id }, relations: ['classesTaught'] });
+    async findOne(Id: string): Promise<Teacher> {
+        return await this.teacherRepository.findOne({ where: { id: Id }, relations: ['classesTaught'] });
     }
 
     async create(teacherData: Partial<Teacher>): Promise<Teacher> {
@@ -67,7 +67,7 @@ export class TeacherService extends CrudService<Teacher> {
             throw new NotFoundException('User must have the teacher role to be assigned as a teacher');
         }
         teacherData.classesTaught = []; // Initialize with an empty array
-        return super.create(teacherData);
+        return await super.create(teacherData);
     }
 
     async linkClassToTeacher(teacherId: string, classId: string): Promise<Teacher> {
@@ -89,6 +89,6 @@ export class TeacherService extends CrudService<Teacher> {
         teacher.classesTaught.push(classEntity);
 
         // Save the updated teacher entity
-        return this.teacherRepository.save(teacher);
+        return await this.teacherRepository.save(teacher);
     }
 }
