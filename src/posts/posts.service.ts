@@ -35,7 +35,11 @@ export class PostsService extends CrudService<Post> {
         const students = classDuPost.students;
         console.log(students);
         for (const student of students) {
-            await this.emailServerService.SendPostMail(student.user.email, student.user.firstName, classDuPost.class_name);
+            await this.emailServerService.SendPostMail(
+                student.user.email,
+                student.user.firstName,
+                classDuPost.class_name,
+            );
         }
         const post = super.create(entity);
 
@@ -43,16 +47,15 @@ export class PostsService extends CrudService<Post> {
     }
     async findPostsByStudentId(studentId: string): Promise<Post[]> {
         const student = await this.studentService.findOne({
-          where: { id: studentId },
-          relations: ['classes', 'classes.posts', 'classes.posts.author', 'classes.posts.className'],
+            where: { id: studentId },
+            relations: ['classes', 'classes.posts', 'classes.posts.author', 'classes.posts.className'],
         });
-      
+
         if (!student) {
-          throw new Error('Student not found');
+            throw new Error('Student not found');
         }
-      
+
         const posts = student.classes.flatMap((classEntity) => classEntity.posts);
         return posts;
-      }
-      
+    }
 }

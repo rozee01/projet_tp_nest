@@ -1,4 +1,14 @@
-import { BeforeInsert, BeforeUpdate, Column, Entity, JoinColumn, ManyToMany, OneToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+    BeforeInsert,
+    BeforeUpdate,
+    Column,
+    Entity,
+    JoinColumn,
+    ManyToMany,
+    OneToMany,
+    OneToOne,
+    PrimaryGeneratedColumn,
+} from 'typeorm';
 import { User } from '../../users/entities/user.entity';
 
 import { SoftDelete } from 'src/common/database/softdelete.entity';
@@ -21,10 +31,9 @@ export class Student extends SoftDelete {
     level: LevelEnum;
 
     @OneToOne(() => User)
-    @JoinColumn({ name: 'id' })
+    @JoinColumn({ name: 'id', foreignKeyConstraintName: 'student_user_id' })
     user: User;
 
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     @ManyToMany(() => Class, (Class) => Class.students)
     classes: Class[];
 

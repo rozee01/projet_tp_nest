@@ -13,10 +13,7 @@ import { PostsModule } from 'src/posts/posts.module';
 import { EmailServerService } from 'src/email-server/email-server.service';
 
 @Module({
-    imports: [
-        TypeOrmModule.forFeature([Student, User]),
-        forwardRef(() => PostsModule)
-    ],
+    imports: [TypeOrmModule.forFeature([Student, User]), forwardRef(() => PostsModule)],
     controllers: [StudentController],
     providers: [StudentService, AuthService, UsersService, JwtService],
     exports: [StudentService],

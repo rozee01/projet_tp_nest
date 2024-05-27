@@ -29,14 +29,14 @@ export class StudentController {
     constructor(
         private readonly studentsService: StudentService,
         private readonly authService: AuthService,
-        private readonly postsService: PostsService
+        private readonly postsService: PostsService,
     ) {}
 
     @UseGuards(JWTGuard)
     @Get(':id/posts')
-  async getStudentPosts(@Param('id') studentId: string) {
-    return this.postsService.findPostsByStudentId(studentId);
-  }
+    async getStudentPosts(@Param('id') studentId: string) {
+        return this.postsService.findPostsByStudentId(studentId);
+    }
 
     @Post()
     async create(@Body() signUp: StudentSignUpDTO) {

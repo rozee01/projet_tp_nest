@@ -14,7 +14,7 @@ export class StudentService extends CrudService<Student> {
         super(studentRepository);
     }
 
-  /*  async findOne(Id: string): Promise<Student> {
+    /*  async findOne(Id: string): Promise<Student> {
         return this.studentRepository.findOne({where : {id: Id} , relations: ['classes']})
     }*/
 
