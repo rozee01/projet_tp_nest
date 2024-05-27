@@ -52,9 +52,18 @@ export class ClassService extends CrudService<Class> {
         // Enroll the student in the class
         classInstance.students.push(student);
 
-        await this.classRepository.save(classInstance);
-    }
-    async findByName(class_name: string): Promise<Class> {
-        return this.classRepository.findOne({ where: { class_name }, relations: ['students', 'students.user'] });
-    }
+      await this.classRepository.save(classInstance);
+  }
+    async findByName(class_name: string): Promise<Class | null> {
+        const classes = await this.classRepository.find({ where: { class_name } });
+        if (classes.length === 0) {
+          return null; // Not found
+        } else if (classes.length === 1) {
+          return classes[0]; // Return the first result
+        } else {
+          // Handle multiple results (possibly an error or ambiguous situation)
+          // You may throw an error, log a warning, or handle it in any other way suitable for your application
+          console.warn(`Multiple classes found with name '${class_name}'`);
+          return classes[0]; // Return the first result
+        }    }
 }

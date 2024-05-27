@@ -15,7 +15,7 @@ export class Post extends SoftDelete {
 
     @ManyToOne(() => Class, (className) => className.posts)
     @JoinColumn({ name: 'class_id' }) // Add this line
-    className: Class;
+    class_name: Class;  
 
     @ManyToOne(() => Teacher, (teacher) => teacher.posts, { onDelete: 'CASCADE' })
     author: Teacher;
