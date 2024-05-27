@@ -15,6 +15,7 @@ import {
     StreamableFile,
     NotFoundException,
     UploadedFiles,
+    Sse,
 } from '@nestjs/common';
 import { createReadStream, existsSync } from 'fs';
 import { PostsService } from './posts.service';
@@ -36,17 +37,32 @@ import { ActionEnum } from 'src/common/enum/action.enum';
 import { Class } from 'src/class/entities/class.entity';
 import { TeacherService } from 'src/teacher/teacher.service';
 import { ClassService } from 'src/class/class.service';
+import { Observable, filter, from, fromEvent, map, switchMap } from 'rxjs';
+import { eventType } from 'src/common/eventType';
+import { StudentService } from 'src/student/student.service';
 
 @Controller('posts')
 export class PostsController {
     constructor(
         private readonly postsService: PostsService,
+        private readonly studentService:StudentService,
         private readonly teacherService:TeacherService,
         private readonly classService: ClassService,
         private readonly filesService: FileUploadService,
-       // private eventEmitter: EventEmitter2,
+       private eventEmitter: EventEmitter2,
     ) {}
-
+    
+    @Sse('sse')
+    sse(): Observable<MessageEvent> {
+        return fromEvent(this.eventEmitter, 'persistence').pipe(
+          filter((payload): payload is eventType => payload.hasOwnProperty('post') && payload.hasOwnProperty('user') && payload.hasOwnProperty('action') && payload.hasOwnProperty('class')),
+          map((payload: eventType) => {
+            console.log('payload', payload);
+          return new MessageEvent('persistence event', { data: payload });
+          }),
+        );
+      }
+    
     @Post()
     @UseGuards(JWTGuard)
     @UseInterceptors(FilesInterceptor('files'))
@@ -75,12 +91,12 @@ if (files && files.length > 0) {
         var p = await this.postsService.create(post);
         p.author = await this.teacherService.findOne(user.id);
         // Set the authorId to the current user's ID
-        /*this.eventEmitter.emit('persistence', {
+        this.eventEmitter.emit('persistence', {
             post: post,
             user: p.author,
             class: p.className,
             action: ActionEnum.CREATE,
-        });*/
+        });
         return p;
     }
 

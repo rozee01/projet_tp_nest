@@ -14,7 +14,7 @@ export class Student extends SoftDelete {
     @OneToOne(() => User)
     @JoinColumn({ name: 'id' })
     user: User;
-
+    
     // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     @ManyToMany(() => Class, (Class) => Class.students)
     classes: Class[];
